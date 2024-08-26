@@ -10,8 +10,9 @@ StockContextProvider.propTypes = {
 
 export function StockContextProvider({ children }) {
   const [items, setItems] = useState([]);
+  const [user, setUser] = useState(null); // Estado para armazenar o usuário autenticado
 
-  // Carrega os itens do estoque da API quando o componente é montado
+  // Carrega os itens do estoque da API e o usuário do localStorage quando o componente é montado
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -23,11 +24,39 @@ export function StockContextProvider({ children }) {
     };
 
     fetchItems();
-  }, []);
+
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser && storedUser !== "undefined") {
+      try {
+        const loggedInUser = JSON.parse(storedUser);
+        if (loggedInUser) {
+          setUser(loggedInUser);
+        }
+      } catch (error) {
+        console.error(
+          "Erro ao analisar os dados do usuário do localStorage:",
+          error
+        );
+      }
+    }
+  }, []); // Lista de dependências vazia para garantir que o efeito só seja executado uma vez
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    if (token && token !== "null") {
+      return { Authorization: `Bearer ${token}` };
+    } else {
+      console.error("Token de autorização não encontrado ou inválido.");
+      return {};
+    }
+  };
 
   const addItem = async (item) => {
     try {
-      const response = await api.post("/items/new", item);
+      const response = await api.post("/items/new", item, {
+        headers: getAuthHeaders(), // Incluindo o token de autorização
+      });
       setItems((current) => [response.data, ...current]);
     } catch (error) {
       logError("Erro ao adicionar item:", error);
@@ -40,7 +69,9 @@ export function StockContextProvider({ children }) {
 
   const updateItem = async (itemId, newAttributes) => {
     try {
-      const response = await api.put(`/items/${itemId}/update`, newAttributes);
+      const response = await api.put(`/items/${itemId}/update`, newAttributes, {
+        headers: getAuthHeaders(), // Incluindo o token de autorização
+      });
       setItems((current) => {
         const itemIndex = current.findIndex((i) => i.id === +itemId);
         const updatedItems = [...current];
@@ -54,11 +85,35 @@ export function StockContextProvider({ children }) {
 
   const deleteItem = async (itemId) => {
     try {
-      await api.delete(`/items/${itemId}`);
+      await api.delete(`/items/${itemId}`, {
+        headers: getAuthHeaders(), // Incluindo o token de autorização
+      });
       setItems((current) => current.filter((item) => item.id !== itemId));
     } catch (error) {
       logError("Erro ao deletar item:", error);
     }
+  };
+
+  const loginUser = (userData) => {
+    if (!userData) {
+      console.error("Usuário inválido não pode ser salvo no estado.");
+      return;
+    }
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData)); // Armazena o usuário no localStorage
+
+    // Armazene o token JWT no localStorage ou em um state seguro
+    if (userData.token) {
+      localStorage.setItem("token", userData.token);
+    } else {
+      console.error("Token JWT não fornecido durante o login.");
+    }
+  };
+
+  const logoutUser = () => {
+    setUser(null);
+    localStorage.removeItem("user"); // Remove o usuário do localStorage
+    localStorage.removeItem("token"); // Remove o token do localStorage
   };
 
   const logError = (message, error) => {
@@ -85,6 +140,9 @@ export function StockContextProvider({ children }) {
     getItem,
     updateItem,
     deleteItem,
+    user,
+    loginUser,
+    logoutUser,
   };
 
   return (

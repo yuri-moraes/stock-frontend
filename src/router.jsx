@@ -6,9 +6,10 @@ import CreateItem from "./pages/items/CreateItem";
 import ShowItem from "./pages/items/ShowItem";
 import UpdateItem from "./pages/items/UpdateItem";
 import ItemsLayout from "./pages/items/ItemsLayout";
-import RegisterForm from "./pages/users/RegisterForm";
-import LoginForm from "./pages/users/LoginForm";
+import RegisterForm from "./pages/Users/RegisterForm";
+import LoginForm from "./pages/Users/LoginForm";
 import api from "./api";
+import UserProfile from "./pages/Users/UserProfile";
 
 const fetchItem = async ({ params }) => {
   try {
@@ -36,6 +37,10 @@ const router = createHashRouter([
       {
         path: "users/login",
         element: <LoginForm />,
+      },
+      {
+        path: "users/:id",
+        element: <UserProfile />,
       },
       {
         path: "items",

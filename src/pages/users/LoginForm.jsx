@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Para redirecionamento após login
+import { useNavigate } from "react-router-dom";
 import api from "../../api";
+import { useStock } from "../../context/useStock";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate(); // Hook para navegação
+  const { loginUser } = useStock();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setError(null); // Resetando erro ao submeter
+    setError(null);
 
     try {
       const response = await api.post("/users/login", {
@@ -20,12 +21,26 @@ export default function LoginForm() {
         password,
       });
 
-      console.log("Login bem-sucedido:", response.data);
+      console.log("Resposta da API de login:", response.data);
 
-      // Redirecionar o usuário para a página principal ou outra rota protegida
-      navigate("/");
+      // Extrair o token da resposta da API, assumindo que ele está dentro de uma string
+      const tokenMatch = response.data.message.match(/token: (\S+)/);
+      const token = tokenMatch ? tokenMatch[1] : null;
+
+      if (token) {
+        const userData = { email, token }; // Incluindo email e token no userData para armazenar
+        loginUser(userData);
+        navigate("/");
+      } else {
+        setError("Token JWT não foi recebido.");
+        console.error("Token JWT não foi encontrado na resposta da API.");
+      }
     } catch (error) {
-      setError(error.response ? error.response.data : "Erro ao fazer login");
+      const errorMessage =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "Erro ao fazer login";
+      setError(errorMessage);
       console.error("Erro ao fazer login:", error);
     }
   };

@@ -1,0 +1,224 @@
+/* Estilo existente */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #333;
+  min-height: 100vh;
+}
+
+#root {
+  font-family: Arial, sans-serif;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  padding: 1em 0;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav .buttons {
+  margin: 0 1em;
+  display: flex;
+  gap: 2em;
+}
+
+nav button {
+  background-color: transparent;
+  border: solid 1px transparent;
+  color: #fff;
+  margin: 0 0.0125em;
+  cursor: pointer;
+}
+
+nav a span {
+  font-size: 1.3em;
+  margin: 0.3em 1em;
+  text-decoration: none;
+  color: #fff;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.2em 0.56em 1em;
+  font-weight: 100;
+}
+
+.resultsDisplay {
+  display: flex;
+  justify-content: center;
+}
+
+.display {
+  background-color: #222;
+  padding: 1.25em;
+  margin: 0.625em;
+  width: 18.4em;
+  text-align: center;
+  border-radius: 0.5em;
+}
+
+.display p {
+  text-align: start;
+  margin: 0;
+  font-size: 0.7em;
+}
+
+.display p:nth-child(2) {
+  margin-top: 0.25em;
+  font-size: 2em;
+  text-align: center;
+}
+
+.table-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 0.0125em 0;
+  gap: 1em;
+  padding: 0 1.5em;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25em 0;
+}
+
+th,
+td {
+  padding: 0.9375em;
+  text-align: start;
+}
+
+th {
+  background-color: #222;
+  text-align: start;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.4em 1.1em;
+  font-size: 0.9em;
+  color: #080808;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0.625em;
+  cursor: pointer;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #666;
+}
+
+footer {
+  margin: 2.5em 1em;
+  font-size: 0.875em;
+  font-weight: 300;
+}
+
+/* Novo estilo para ShowItem */
+.item {
+  background-color: #444;
+  border-radius: 0.5em;
+  padding: 1.5em;
+  margin: 1.5em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item h2 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+  color: #fff;
+}
+
+.item .button.is-small {
+  margin-bottom: 1em;
+  font-size: 0.8em;
+  padding: 0.3em 0.8em;
+}
+
+.item .button {
+  margin-right: 1em;
+}
+
+.item .row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin: 1em 0;
+}
+
+.item .row span,
+.item .row p {
+  font-size: 1.1em;
+}
+
+.item p {
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+.item button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+
+.item button:hover {
+  background-color: #e60000;
+}
+
+.form-container {
+  background-color: #222;
+  padding: 2em;
+  margin: 2em auto;
+  border-radius: 0.5em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 1.5em;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1.1em;
+  color: #fff;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75em;
+  border-radius: 0.5em;
+  border: none;
+  font-size: 1em;
+  background-color: #333;
+  color: #fff;
+}
+
+.input-field:focus {
+  outline: none;
+  background-color: #444;
+}
+
+.error-message {
+  color: #ff4d4d;
+  margin-bottom: 1em;
+}

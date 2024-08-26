@@ -1,94 +1,179 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useStock } from "../../context/useStock";
+import {
+  editUserProfile,
+  changeUserPassword,
+  performLogout,
+} from "../../hooks/userUtils";
 import api from "../../api";
 
 export default function UserProfile() {
-  const { id } = useParams();
+  const { id } = useParams(); // Pega o ID da URL
+  const { user, logoutUser } = useStock();
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: "",
+  const [currentUser, setCurrentUser] = useState(null); // Estado para o usuário carregado
+  const [editMode, setEditMode] = useState(false);
+  const [updatedUser, setUpdatedUser] = useState({
     email: "",
-    password: "",
+    name: "",
     role: "",
   });
+  const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUser = async () => {
       try {
-        const response = await api.get(`/user/${id}`);
-        setUser(response.data);
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          throw new Error(
+            "Token não encontrado. Usuário não está autenticado."
+          );
+        }
+
+        const response = await api.get(`/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setCurrentUser(response.data);
+        setUpdatedUser({
+          email: response.data.email,
+          name: response.data.name,
+          role: response.data.role,
+        });
       } catch (error) {
-        setError("Erro ao carregar dados do usuário.");
+        setError("Erro ao carregar perfil do usuário.");
       }
     };
 
-    fetchUserData();
+    fetchUser();
   }, [id]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
-
-  const handleUpdate = async () => {
+  // Função para lidar com a edição do perfil
+  const handleEditProfile = async () => {
     try {
-      const response = await api.put(`/user/${id}`, {
-        name: user.name,
-        password: user.password,
-        role: user.role,
-      });
-      alert("Informações atualizadas com sucesso.");
+      const updatedData = await editUserProfile(id, updatedUser);
+      setCurrentUser(updatedData); // Atualiza o estado local
+      setEditMode(false);
+      setError(null);
     } catch (error) {
-      setError("Erro ao atualizar informações do usuário.");
+      setError("Erro ao atualizar o perfil.");
     }
   };
 
+  // Função para lidar com a alteração de senha
+  const handleChangePassword = async () => {
+    try {
+      await changeUserPassword(id, newPassword);
+      setNewPassword("");
+      setError(null);
+      alert("Senha alterada com sucesso.");
+    } catch (error) {
+      setError("Erro ao alterar a senha.");
+    }
+  };
+
+  // Função para lidar com o logout
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    performLogout(logoutUser);
     navigate("/users/login");
   };
 
+  if (!currentUser) {
+    return (
+      <div className="user-profile error-message">
+        <p>
+          Perfil não encontrado ou você não tem permissão para acessar esta
+          página.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="user-profile">
-      <h1>Perfil do Usuário</h1>
-      {error && <p className="error-message">{error}</p>}
-      <div>
-        <label>Nome:</label>
-        <input
-          type="text"
-          name="name"
-          value={user.name}
-          onChange={handleInputChange}
-        />
+      <div className="profile-header">
+        <h1>Perfil do Usuário</h1>
       </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" name="email" value={user.email} disabled />
+      <div className="profile-details">
+        {editMode ? (
+          <>
+            <input
+              type="text"
+              value={updatedUser.name}
+              onChange={(e) =>
+                setUpdatedUser({ ...updatedUser, name: e.target.value })
+              }
+              placeholder="Nome"
+              className="input-field"
+            />
+            <input
+              type="email"
+              value={updatedUser.email}
+              onChange={(e) =>
+                setUpdatedUser({ ...updatedUser, email: e.target.value })
+              }
+              placeholder="Email"
+              className="input-field"
+              disabled
+            />
+            <input
+              type="text"
+              value={updatedUser.role}
+              onChange={(e) =>
+                setUpdatedUser({ ...updatedUser, role: e.target.value })
+              }
+              placeholder="Role"
+              className="input-field"
+            />
+            <button className="button is-small" onClick={handleEditProfile}>
+              Salvar Alterações
+            </button>
+          </>
+        ) : (
+          <>
+            <p>
+              <strong>Name:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>ID:</strong> {user.id}
+            </p>
+            <p>
+              <strong>Role:</strong>{" "}
+              {user.role === "admin" ? "Administrador" : "Comum"}
+            </p>
+            <button
+              className="button is-small"
+              onClick={() => setEditMode(true)}
+            >
+              Editar Perfil
+            </button>
+          </>
+        )}
       </div>
-      <div>
-        <label>Senha:</label>
+      <div className="profile-actions">
         <input
           type="password"
-          name="password"
-          value={user.password}
-          onChange={handleInputChange}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          placeholder="Nova Senha"
+          className="input-field"
         />
+        <button className="button is-small" onClick={handleChangePassword}>
+          Alterar Senha
+        </button>
+        <button className="button is-small" onClick={handleLogout}>
+          Sair
+        </button>
       </div>
-      <div>
-        <label>Role:</label>
-        <input
-          type="text"
-          name="role"
-          value={user.role}
-          onChange={handleInputChange}
-        />
-      </div>
-      <button onClick={handleUpdate}>Atualizar Informações</button>
-      <button onClick={handleLogout}>Logout</button>
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }

@@ -22,11 +22,19 @@ export default function Nav() {
         );
       }
     }
-  }, []);
+  }, []); // Certifique-se de que o efeito só roda uma vez ao montar o componente
 
   const handleLogout = () => {
     logoutUser();
     navigate("/users/login");
+  };
+
+  const handleProfileClick = () => {
+    if (user && user.id) {
+      navigate(`/users/${user.id}`);
+    } else {
+      console.error("ID do usuário não está definido.");
+    }
   };
 
   return (
@@ -43,15 +51,23 @@ export default function Nav() {
         </Link>
         {user ? (
           <>
-            <button onClick={() => navigate(`/user/${user.id}`)}>
-              Meu Perfil
-            </button>
+            <button onClick={handleProfileClick}>Meu Perfil</button>
+            {user.role === "admin" && (
+              <Link to={"/users"}>
+                <button>Dashboard</button>
+              </Link>
+            )}
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
-          <Link to={"/users/login"}>
-            <button>Login</button>
-          </Link>
+          <>
+            <Link to={"/users/login"}>
+              <button>Login</button>
+            </Link>
+            <Link to={"/users/register"}>
+              <button>Cadastro</button>
+            </Link>
+          </>
         )}
       </div>
     </nav>

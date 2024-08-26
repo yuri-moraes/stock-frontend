@@ -10,9 +10,8 @@ StockContextProvider.propTypes = {
 
 export function StockContextProvider({ children }) {
   const [items, setItems] = useState([]);
-  const [user, setUser] = useState(null); // Estado para armazenar o usuário autenticado
+  const [user, setUser] = useState(null);
 
-  // Carrega os itens do estoque da API e o usuário do localStorage quando o componente é montado
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -40,7 +39,7 @@ export function StockContextProvider({ children }) {
         );
       }
     }
-  }, []); // Lista de dependências vazia para garantir que o efeito só seja executado uma vez
+  }, []);
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -69,8 +68,11 @@ export function StockContextProvider({ children }) {
 
   const updateItem = async (itemId, newAttributes) => {
     try {
-      const response = await api.put(`/items/${itemId}/update`, newAttributes, {
-        headers: getAuthHeaders(), // Incluindo o token de autorização
+      const { title, description, unity, price, category } = newAttributes;
+      const updatedData = { title, description, unity, price, category };
+
+      const response = await api.put(`/items/${itemId}/update`, updatedData, {
+        headers: getAuthHeaders(),
       });
       setItems((current) => {
         const itemIndex = current.findIndex((i) => i.id === +itemId);
@@ -112,8 +114,8 @@ export function StockContextProvider({ children }) {
 
   const logoutUser = () => {
     setUser(null);
-    localStorage.removeItem("user"); // Remove o usuário do localStorage
-    localStorage.removeItem("token"); // Remove o token do localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   const logError = (message, error) => {

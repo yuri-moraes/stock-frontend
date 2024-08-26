@@ -23,17 +23,16 @@ export default function LoginForm() {
 
       console.log("Resposta da API de login:", response.data);
 
-      // Extrair o token da resposta da API, assumindo que ele está dentro de uma string
-      const tokenMatch = response.data.message.match(/token: (\S+)/);
-      const token = tokenMatch ? tokenMatch[1] : null;
+      const { user, token } = response.data;
 
-      if (token) {
-        const userData = { email, token }; // Incluindo email e token no userData para armazenar
-        loginUser(userData);
+      if (user && token) {
+        loginUser({ ...user, token });
         navigate("/");
       } else {
-        setError("Token JWT não foi recebido.");
-        console.error("Token JWT não foi encontrado na resposta da API.");
+        setError("Dados do usuário não foram recebidos.");
+        console.error(
+          "Dados do usuário ou token não foram encontrados na resposta da API."
+        );
       }
     } catch (error) {
       const errorMessage =

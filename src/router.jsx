@@ -10,6 +10,7 @@ import RegisterForm from "./pages/Users/RegisterForm";
 import LoginForm from "./pages/Users/LoginForm";
 import api from "./api";
 import UserProfile from "./pages/Users/UserProfile";
+import UserDashboard from "./pages/Users/UserDashboard";
 
 const fetchItem = async ({ params }) => {
   try {
@@ -29,6 +30,10 @@ const router = createHashRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "users", // Rota para o dashboard
+        element: <UserDashboard />,
       },
       {
         path: "users/register",

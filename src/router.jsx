@@ -6,12 +6,12 @@ import CreateItem from "./pages/items/CreateItem";
 import ShowItem from "./pages/items/ShowItem";
 import UpdateItem from "./pages/items/UpdateItem";
 import ItemsLayout from "./pages/items/ItemsLayout";
-import RegisterForm from "./pages/Users/RegisterForm";
-import LoginForm from "./pages/Users/LoginForm";
+import RegisterForm from "./pages/users/RegisterForm";
+import LoginForm from "./pages/users/LoginForm";
 import api from "./api";
-import UserProfile from "./pages/Users/UserProfile";
-import UserDashboard from "./pages/Users/UserDashboard";
-import EditProfileUser from "./pages/Users/EditProfileUser";
+import UserProfile from "./pages/users/UserProfile";
+import UserDashboard from "./pages/users/UserDashboard";
+import EditProfileUser from "./pages/users/EditProfileUser";
 
 const fetchItem = async ({ params }) => {
   try {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { useStock } from "../../context/useStock";
+import DeleteUserButton from "../../components/DeleteUserButton";
 
 export default function UserDashboard() {
   const [users, setUsers] = useState([]);
@@ -40,7 +41,11 @@ export default function UserDashboard() {
   }, [user, navigate]);
 
   const handleUserClick = (userId) => {
-    navigate(`/users/${userId}`); // Navega para o perfil do usuário específico
+    navigate(`/users/edit/${userId}`);
+  };
+
+  const handleDelete = (userId) => {
+    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
   };
 
   return (
@@ -48,21 +53,20 @@ export default function UserDashboard() {
       <h1>Dashboard de Usuários</h1>
       <ul className="user-list">
         {users.map((user) => (
-          <li
-            key={user.id}
-            onClick={() => handleUserClick(user.id)}
-            className="user-list-item"
-          >
+          <li key={user.id} className="user-list-item">
             <div className="user-info">
               <span className="user-name">{user.name}</span>
               <span className="user-email">{user.email}</span>
             </div>
-            <button
-              className="edit-button"
-              onClick={() => handleUserClick(user.id)}
-            >
-              Editar
-            </button>
+            <div className="div-buttons">
+              <button
+                className="edit-button"
+                onClick={() => handleUserClick(user.id)}
+              >
+                Editar
+              </button>
+              <DeleteUserButton userId={user.id} onDelete={handleDelete} />
+            </div>
           </li>
         ))}
       </ul>

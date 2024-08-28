@@ -11,6 +11,7 @@ import LoginForm from "./pages/Users/LoginForm";
 import api from "./api";
 import UserProfile from "./pages/Users/UserProfile";
 import UserDashboard from "./pages/Users/UserDashboard";
+import EditProfileUser from "./pages/Users/EditProfileUser";
 
 const fetchItem = async ({ params }) => {
   try {
@@ -32,7 +33,7 @@ const router = createHashRouter([
         element: <Home />,
       },
       {
-        path: "users", // Rota para o dashboard
+        path: "users",
         element: <UserDashboard />,
       },
       {
@@ -46,6 +47,10 @@ const router = createHashRouter([
       {
         path: "users/:id",
         element: <UserProfile />,
+      },
+      {
+        path: "users/edit/:id",
+        element: <EditProfileUser />,
       },
       {
         path: "items",

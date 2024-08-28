@@ -1,6 +1,6 @@
 import api from "../api";
 
-// Função para editar o perfil do usuário (incluindo nome, email e role)
+// Função para editar o perfil do usuário (incluindo nome e role)
 export const editUserProfile = async (userId, updatedData) => {
   try {
     const token = localStorage.getItem("token");
@@ -15,7 +15,8 @@ export const editUserProfile = async (userId, updatedData) => {
     if (updatedData.role) payload.role = updatedData.role;
 
     // Incluindo o token no cabeçalho de autorização
-    const response = await api.put(`/users/${userId}`, payload, {
+    const response = await api.put(`/users/edit/${userId}`, payload, {
+      // Altere o endpoint aqui para o correto
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -38,7 +39,7 @@ export const changeUserPassword = async (userId, newPassword) => {
     }
 
     const response = await api.put(
-      `/users/${userId}`,
+      `/users/edit/${userId}`, // Altere o endpoint aqui para o correto
       { password: newPassword },
       {
         headers: {

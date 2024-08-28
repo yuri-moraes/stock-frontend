@@ -11,7 +11,7 @@ Link da página: [Clique aqui](https://react-stock-jph97vote-yurimoraes-projects
 Como é um projeto em equipe, o responsável pela API do projeto pode ser encontrado no link 
 abaixo:
 
-[@stock-api](https://github.com/marcos90s/stock_api)
+[@stock-api](https://github.com/yuri-moraes/stock_api/tree/main)
 
 ## Autores
 

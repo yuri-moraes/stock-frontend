@@ -10,7 +10,9 @@ export default function RootLayout() {
       <main>
         <Outlet />
       </main>
-      <footer>&copy; 2024 Yuri Moraes. Todos os direitos reservados.</footer>
+      <footer>
+        &copy; 2024 Yuri Moraes & Marcos . Todos os direitos reservados.
+      </footer>
     </>
   );
 }

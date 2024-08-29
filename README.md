@@ -1,44 +1,62 @@
+---
 
-# Título do Projeto
+# Controle de Estoque
 
-O projeto tem como objetivo ser uma aplicação web para controle de estoque de itens, tendo como métodos CRUD para entidades de usuário e de Itens. Sendo o adiministrador o responsável para controlar conta de usuários e atualização dos itens, enquanto um usuário comum poderá apenas realizar login, alterar a senha, criar e visualizar itens.
+Este projeto é uma aplicação web desenvolvida para o controle de estoque de itens, implementando funcionalidades CRUD para gerenciar entidades de usuários e itens. A administração do sistema é realizada por um administrador, que tem permissões para gerenciar contas de usuários e atualizar os itens do estoque. Usuários comuns, por outro lado, têm permissões limitadas, podendo apenas realizar login, alterar sua senha, e criar e visualizar itens disponíveis.
 
-Link da página: [Clique aqui](https://react-stock-jph97vote-yurimoraes-projects.vercel.app/#/)
+Acesse a aplicação através do seguinte link: [Clique aqui](https://react-stock-jph97vote-yurimoraes-projects.vercel.app/#/)
 
+## Tecnologias Utilizadas
+
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
+
+- **Front-end:**
+  - React: Biblioteca para construção de interfaces de usuário.
+  - React Router DOM: Biblioteca para gerenciar navegação entre páginas.
+  - Axios: Cliente HTTP para realizar requisições à API.
+  - Prop-Types: Biblioteca para validação de tipos de propriedades em componentes React.
+
+- **Back-end:**
+  - Node.js: Plataforma de execução de código JavaScript no servidor.
+  - Express: Framework web para Node.js, utilizado na construção da API.
+
+- **Ferramentas e Utilitários:**
+  - Vite: Ferramenta de build e servidor de desenvolvimento.
+  - ESLint: Ferramenta de análise estática para identificar padrões problemáticos em JavaScript/JSX.
+  - CORS: Middleware para permitir requisições de recursos entre origens diferentes.
+
+- **Gerenciamento de Estado e Contexto:**
+  - Context API do React: Utilizada para gerenciar o estado global da aplicação.
 
 ## Documentação da API
 
-Como é um projeto em equipe, o responsável pela API do projeto pode ser encontrado no link 
-abaixo:
+Como este é um projeto colaborativo, o desenvolvimento da API está sendo conduzido separadamente. Para mais detalhes sobre a API, acesse o repositório oficial:
 
-[@stock-api](https://github.com/yuri-moraes/stock_api/tree/main)
+- [Repositório da API (@stock-api)](https://github.com/yuri-moraes/stock_api/tree/main)
 
 ## Autores
 
-- [@yuri-moraes](https://www.github.com/yuri-moraes)
-- [@marcos90s](https://www.github.com/marcos90s)
-
+- [Yuri Moraes](https://www.github.com/yuri-moraes)
+- [Marcos dos Santos](https://www.github.com/marcos90s)
 
 ## Deploy
-Configure o arquivo ``./src/api`` para que aponte para a porta da sua API no back-end, exemplo:
 
-```bash
-      baseURL: "http://localhost=3000"
+Para configurar o projeto, ajuste o arquivo de configuração da API em `./src/api` para apontar para a porta correta do seu servidor back-end. Exemplo de configuração:
 
+```javascript
+baseURL: "http://localhost:3000"
 ```
 
-Para fazer o deploy desse projeto rode
+Para iniciar o projeto em ambiente de desenvolvimento, utilize o seguinte comando:
 
 ```bash
-  npm run dev
+npm run dev
 ```
-
 
 ## Contribuindo
 
-Contribuições são sempre bem-vindas!
+Contribuições são sempre bem-vindas! Todos os `pull requests` serão revisados e, se a sua contribuição for significativa, ela será incorporada ao projeto.
 
-Como temos poucas contribuições todos `pull-reques` serão analisadas e se sua `contribuição` for impactante, tenha certeza que a adotaremos.
+Por favor, siga as diretrizes definidas na seção `Objetivo` deste README para garantir que sua contribuição esteja alinhada com o propósito do projeto.
 
-Por favor, siga o `Objetivo` desse projeto como dito na seção `Título`.
-
+---

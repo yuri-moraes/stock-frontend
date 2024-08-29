@@ -1,5 +1,3 @@
----
-
 # Controle de Estoque
 
 Este projeto é uma aplicação web desenvolvida para o controle de estoque de itens, implementando funcionalidades CRUD para gerenciar entidades de usuários e itens. A administração do sistema é realizada por um administrador, que tem permissões para gerenciar contas de usuários e atualizar os itens do estoque. Usuários comuns, por outro lado, têm permissões limitadas, podendo apenas realizar login, alterar sua senha, e criar e visualizar itens disponíveis.
@@ -58,5 +56,3 @@ npm run dev
 Contribuições são sempre bem-vindas! Todos os `pull requests` serão revisados e, se a sua contribuição for significativa, ela será incorporada ao projeto.
 
 Por favor, siga as diretrizes definidas na seção `Objetivo` deste README para garantir que sua contribuição esteja alinhada com o propósito do projeto.
-
----

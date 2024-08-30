@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import useStockItems from "../../../hooks/useStockItems";
 import DeleteButton from "../../../components/DeleteButton";
+import { useStock } from "../../../context/useStock";
 
 export default function StockItems() {
   const { items } = useStockItems();
+  const { user } = useStock(); // Obtenha o usuário do contexto
 
   return (
     <>
@@ -31,13 +33,17 @@ export default function StockItems() {
                     <Link to={`/items/${item.id}`} className="button view">
                       Ver
                     </Link>
-                    <Link
-                      to={`/items/${item.id}/update`}
-                      className="button update"
-                    >
-                      Atualizar
-                    </Link>
-                    <DeleteButton itemId={item.id} itemName={item.title} />
+                    {user.role === "admin" && (
+                      <>
+                        <Link
+                          to={`/items/${item.id}/update`}
+                          className="button update"
+                        >
+                          Atualizar
+                        </Link>
+                        <DeleteButton itemId={item.id} itemName={item.title} />
+                      </>
+                    )}
                   </td>
                 </tr>
               </tbody>

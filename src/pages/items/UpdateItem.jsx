@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ItemForm from "../../components/ItemForm";
 import api from "../../api";
+import { useStock } from "../../context/useStock";
 
 export default function UpdateItem() {
   const { id } = useParams();
+  const { user } = useStock();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,6 +31,10 @@ export default function UpdateItem() {
 
   if (!item) {
     return <div>Item não encontrado</div>;
+  }
+
+  if (user.role !== "admin") {
+    return <div>Você não tem permissão para atualizar este item.</div>;
   }
 
   return (

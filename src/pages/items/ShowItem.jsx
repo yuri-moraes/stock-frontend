@@ -2,11 +2,13 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../api";
 import DeleteButton from "../../components/DeleteButton";
+import { useStock } from "../../context/useStock";
 
 export default function ShowItem() {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useStock(); // Obtenha o usuário do contexto
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -34,10 +36,15 @@ export default function ShowItem() {
   return (
     <div className="item">
       <h2>{item.title}</h2>
-      <Link to={`/items/${item.id}/update`} className="button">
-        Atualizar
-      </Link>
-      <DeleteButton itemId={item.id} itemName={item.title} />
+      {user.role === "admin" && (
+        <>
+          <Link to={`/items/${item.id}/update`} className="button">
+            Atualizar
+          </Link>
+          <DeleteButton itemId={item.id} itemName={item.title} />
+        </>
+      )}
+
       <div className="row">
         <span>Categoria: {item.category}</span>
         <span>Quantidade em estoque: {item.unity}</span>

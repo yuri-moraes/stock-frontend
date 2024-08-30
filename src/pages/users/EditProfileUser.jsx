@@ -3,9 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { changeUserPassword } from "../../hooks/userUtils";
 import api from "../../api";
 import DeleteUserButton from "../../components/DeleteUserButton";
+import { useStock } from "../../context/useStock";
 
 export default function EditProfileUser() {
   const { id } = useParams();
+  const { user } = useStock();
   const navigate = useNavigate();
   const [updatedUser, setUpdatedUser] = useState({
     email: "",
@@ -14,7 +16,7 @@ export default function EditProfileUser() {
   });
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState(null);
-  const [notification, setNotification] = useState(null); // Estado para notificação
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -45,6 +47,10 @@ export default function EditProfileUser() {
 
     fetchUser();
   }, [id]);
+
+  if (user.role !== "admin") {
+    return <div>Você não tem permissão para acessar esta página.</div>;
+  }
 
   // Função para lidar com a edição do perfil
   const handleEditProfile = async () => {

@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { editUserProfile, changeUserPassword } from "../../hooks/userUtils";
+import { changeUserPassword } from "../../hooks/userUtils";
 import api from "../../api";
 import DeleteUserButton from "../../components/DeleteUserButton";
 
 export default function EditProfileUser() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
     email: "",
     name: "",
@@ -15,6 +14,7 @@ export default function EditProfileUser() {
   });
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null); // Estado para notificação
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -33,7 +33,6 @@ export default function EditProfileUser() {
           },
         });
 
-        setCurrentUser(response.data);
         setUpdatedUser({
           email: response.data.email,
           name: response.data.name,
@@ -50,24 +49,42 @@ export default function EditProfileUser() {
   // Função para lidar com a edição do perfil
   const handleEditProfile = async () => {
     try {
-      const updatedData = await editUserProfile(id, updatedUser, "/users/edit"); // Atualize o endpoint aqui
-      setCurrentUser(updatedData); // Atualiza o estado local
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Token não encontrado. Usuário não está autenticado.");
+      }
+
+      const response = await api.put(`/users/edit/${id}`, updatedUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUpdatedUser({
+        email: response.data.email,
+        name: response.data.name,
+        role: response.data.role,
+      });
+
+      setNotification("Perfil atualizado com sucesso!");
       setError(null);
-      alert("Perfil atualizado com sucesso.");
     } catch (error) {
       setError("Erro ao atualizar o perfil.");
+      setNotification("Erro ao atualizar o perfil.");
     }
   };
 
   // Função para lidar com a alteração de senha
   const handleChangePassword = async () => {
     try {
-      await changeUserPassword(id, newPassword);
+      await changeUserPassword(id, newPassword, setUpdatedUser);
       setNewPassword("");
+      setNotification("Senha alterada com sucesso!");
       setError(null);
-      alert("Senha alterada com sucesso.");
     } catch (error) {
       setError("Erro ao alterar a senha.");
+      setNotification("Erro ao alterar a senha.");
     }
   };
 
@@ -76,17 +93,6 @@ export default function EditProfileUser() {
     alert("Usuário deletado com sucesso.");
     navigate("/users");
   };
-
-  if (!currentUser) {
-    return (
-      <div className="user-profile error-message">
-        <p>
-          Perfil não encontrado ou você não tem permissão para acessar esta
-          página.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="user-profile">
@@ -139,6 +145,7 @@ export default function EditProfileUser() {
         </button>
         <DeleteUserButton userId={id} onDelete={handleUserDeleted} />
       </div>
+      {notification && <p className="notification-message">{notification}</p>}
       {error && <p className="error-message">{error}</p>}
     </div>
   );

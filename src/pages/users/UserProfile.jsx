@@ -1,26 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useStock } from "../../context/useStock";
-import {
-  editUserProfile,
-  changeUserPassword,
-  performLogout,
-} from "../../hooks/userUtils";
+import { changeUserPassword, performLogout } from "../../hooks/userUtils";
 import api from "../../api";
 
 export default function UserProfile() {
-  const { id } = useParams(); // Pega o ID da URL
-  const { user, logoutUser } = useStock();
+  const { id } = useParams();
+  const { user, logoutUser } = useStock(); // Obtém o usuário do contexto
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null); // Estado para o usuário carregado
-  const [editMode, setEditMode] = useState(false);
-  const [updatedUser, setUpdatedUser] = useState({
+  const [currentUser, setCurrentUser] = useState({
     email: "",
     name: "",
     role: "",
   });
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,8 +34,7 @@ export default function UserProfile() {
           },
         });
 
-        setCurrentUser(response.data);
-        setUpdatedUser({
+        setCurrentUser({
           email: response.data.email,
           name: response.data.name,
           role: response.data.role,
@@ -53,15 +47,34 @@ export default function UserProfile() {
     fetchUser();
   }, [id]);
 
-  // Função para lidar com a edição do perfil
+  // Função para lidar com a edição do perfil (somente para admin)
   const handleEditProfile = async () => {
+    if (user.role !== "admin") return; // Impede usuários comuns de editar o perfil
+
     try {
-      const updatedData = await editUserProfile(id, updatedUser);
-      setCurrentUser(updatedData); // Atualiza o estado local
-      setEditMode(false);
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Token não encontrado. Usuário não está autenticado.");
+      }
+
+      const response = await api.put(`/users/edit/${id}`, currentUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setCurrentUser({
+        email: response.data.email,
+        name: response.data.name,
+        role: response.data.role,
+      });
+
+      setNotification("Perfil atualizado com sucesso!");
       setError(null);
     } catch (error) {
       setError("Erro ao atualizar o perfil.");
+      setNotification("Erro ao atualizar o perfil.");
     }
   };
 
@@ -70,10 +83,11 @@ export default function UserProfile() {
     try {
       await changeUserPassword(id, newPassword);
       setNewPassword("");
+      setNotification("Senha alterada com sucesso!");
       setError(null);
-      alert("Senha alterada com sucesso.");
     } catch (error) {
       setError("Erro ao alterar a senha.");
+      setNotification("Erro ao alterar a senha.");
     }
   };
 
@@ -83,7 +97,7 @@ export default function UserProfile() {
     navigate("/users/login");
   };
 
-  if (!currentUser) {
+  if (!currentUser.email) {
     return (
       <div className="user-profile error-message">
         <p>
@@ -100,22 +114,32 @@ export default function UserProfile() {
         <h1>Perfil do Usuário</h1>
       </div>
       <div className="profile-details">
-        {editMode ? (
+        <p>
+          <strong>Nome:</strong> {currentUser.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {currentUser.email}
+        </p>
+        <p>
+          <strong>Role:</strong> {currentUser.role}
+        </p>
+        {/* Apenas mostra os campos de edição se o usuário for admin */}
+        {user.role === "admin" && (
           <>
             <input
               type="text"
-              value={updatedUser.name}
+              value={currentUser.name}
               onChange={(e) =>
-                setUpdatedUser({ ...updatedUser, name: e.target.value })
+                setCurrentUser({ ...currentUser, name: e.target.value })
               }
               placeholder="Nome"
               className="input-field"
             />
             <input
               type="email"
-              value={updatedUser.email}
+              value={currentUser.email}
               onChange={(e) =>
-                setUpdatedUser({ ...updatedUser, email: e.target.value })
+                setCurrentUser({ ...currentUser, email: e.target.value })
               }
               placeholder="Email"
               className="input-field"
@@ -123,37 +147,15 @@ export default function UserProfile() {
             />
             <input
               type="text"
-              value={updatedUser.role}
+              value={currentUser.role}
               onChange={(e) =>
-                setUpdatedUser({ ...updatedUser, role: e.target.value })
+                setCurrentUser({ ...currentUser, role: e.target.value })
               }
               placeholder="Role"
               className="input-field"
             />
             <button className="button is-small" onClick={handleEditProfile}>
               Salvar Alterações
-            </button>
-          </>
-        ) : (
-          <>
-            <p>
-              <strong>Name:</strong> {user.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {user.email}
-            </p>
-            <p>
-              <strong>ID:</strong> {user.id}
-            </p>
-            <p>
-              <strong>Role:</strong>{" "}
-              {user.role === "admin" ? "Administrador" : "Comum"}
-            </p>
-            <button
-              className="button is-small"
-              onClick={() => setEditMode(true)}
-            >
-              Editar Perfil
             </button>
           </>
         )}
@@ -173,6 +175,7 @@ export default function UserProfile() {
           Sair
         </button>
       </div>
+      {notification && <p className="notification-message">{notification}</p>}
       {error && <p className="error-message">{error}</p>}
     </div>
   );

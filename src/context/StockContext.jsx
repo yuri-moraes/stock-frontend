@@ -13,15 +13,6 @@ export function StockContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const response = await api.get("/items");
-        setItems(response.data);
-      } catch (error) {
-        logError("Erro ao buscar itens:", error);
-      }
-    };
-
     fetchItems();
 
     const storedUser = localStorage.getItem("user");
@@ -41,6 +32,15 @@ export function StockContextProvider({ children }) {
     }
   }, []);
 
+  const fetchItems = async () => {
+    try {
+      const response = await api.get("/items");
+      setItems(response.data);
+    } catch (error) {
+      logError("Erro ao buscar itens:", error);
+    }
+  };
+
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     if (token && token !== "null") {
@@ -53,10 +53,10 @@ export function StockContextProvider({ children }) {
 
   const addItem = async (item) => {
     try {
-      const response = await api.post("/items/new", item, {
-        headers: getAuthHeaders(), // Incluindo o token de autorização
+      await api.post("/items/new", item, {
+        headers: getAuthHeaders(),
       });
-      setItems((current) => [response.data, ...current]);
+      await fetchItems(); // Atualiza os itens após adicionar
     } catch (error) {
       logError("Erro ao adicionar item:", error);
     }
@@ -71,15 +71,10 @@ export function StockContextProvider({ children }) {
       const { title, description, unity, price, category } = newAttributes;
       const updatedData = { title, description, unity, price, category };
 
-      const response = await api.put(`/items/${itemId}/update`, updatedData, {
+      await api.put(`/items/${itemId}/update`, updatedData, {
         headers: getAuthHeaders(),
       });
-      setItems((current) => {
-        const itemIndex = current.findIndex((i) => i.id === +itemId);
-        const updatedItems = [...current];
-        updatedItems[itemIndex] = response.data;
-        return updatedItems;
-      });
+      await fetchItems(); // Atualiza os itens após atualizar
     } catch (error) {
       logError("Erro ao atualizar item:", error);
     }
@@ -88,9 +83,9 @@ export function StockContextProvider({ children }) {
   const deleteItem = async (itemId) => {
     try {
       await api.delete(`/items/${itemId}`, {
-        headers: getAuthHeaders(), // Incluindo o token de autorização
+        headers: getAuthHeaders(),
       });
-      setItems((current) => current.filter((item) => item.id !== itemId));
+      await fetchItems(); // Atualiza os itens após deletar
     } catch (error) {
       logError("Erro ao deletar item:", error);
     }
@@ -102,9 +97,8 @@ export function StockContextProvider({ children }) {
       return;
     }
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData)); // Armazena o usuário no localStorage
+    localStorage.setItem("user", JSON.stringify(userData));
 
-    // Armazene o token JWT no localStorage ou em um state seguro
     if (userData.token) {
       localStorage.setItem("token", userData.token);
     } else {
@@ -121,16 +115,13 @@ export function StockContextProvider({ children }) {
   const logError = (message, error) => {
     console.error(message);
     if (error.response) {
-      // O servidor respondeu com um status fora do range 2xx
       console.error("Resposta do servidor:", error.response);
       console.error("Dados do erro:", error.response.data);
       console.error("Status:", error.response.status);
       console.error("Headers:", error.response.headers);
     } else if (error.request) {
-      // A requisição foi feita, mas não houve resposta
       console.error("Sem resposta do servidor. Request:", error.request);
     } else {
-      // Alguma outra coisa aconteceu ao configurar a requisição
       console.error("Erro ao configurar a requisição:", error.message);
     }
     console.error("Configuração do Axios:", error.config);

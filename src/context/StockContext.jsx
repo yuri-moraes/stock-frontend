@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import api from "../api";
 
@@ -11,6 +11,15 @@ StockContextProvider.propTypes = {
 export function StockContextProvider({ children }) {
   const [items, setItems] = useState([]);
   const [user, setUser] = useState(null);
+
+  const fetchItems = useCallback(async () => {
+    try {
+      const response = await api.get("/items");
+      setItems(response.data);
+    } catch (error) {
+      logError("Erro ao buscar itens:", error);
+    }
+  }, []);
 
   useEffect(() => {
     fetchItems();
@@ -30,16 +39,7 @@ export function StockContextProvider({ children }) {
         );
       }
     }
-  }, []);
-
-  const fetchItems = async () => {
-    try {
-      const response = await api.get("/items");
-      setItems(response.data);
-    } catch (error) {
-      logError("Erro ao buscar itens:", error);
-    }
-  };
+  }, [fetchItems]); // Inclua fetchItems na lista de dependências
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");

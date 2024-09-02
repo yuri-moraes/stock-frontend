@@ -2,17 +2,35 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import useStockItems from "../../../hooks/useStockItems";
 import DeleteButton from "../../../components/DeleteButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStock } from "../../../context/useStock";
 import api from "../../../api";
 
 export default function StockItems() {
-  const { items: initialItems } = useStockItems();
+  const { fetchItems } = useStockItems();
   const { user } = useStock();
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadItems = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await api.get("/items");
+        setItems(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar itens:", error);
+        setError("Erro ao carregar itens. Tente novamente.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadItems();
+  }, [fetchItems]);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -28,9 +46,19 @@ export default function StockItems() {
     }
   };
 
-  const handleShowAll = () => {
-    setItems(initialItems);
-    setSearchTerm("");
+  const handleShowAll = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await api.get("/items"); // Faz novamente a chamada para buscar todos os itens
+      setItems(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar todos os itens:", error);
+      setError("Erro ao buscar todos os itens. Tente novamente.");
+    } finally {
+      setLoading(false);
+      setSearchTerm(""); // Limpa o termo de busca
+    }
   };
 
   return (
@@ -65,40 +93,43 @@ export default function StockItems() {
               <th>Ações</th>
             </tr>
           </thead>
-          {items.length > 0 ? (
-            items.map((item) => (
-              <tbody key={item.id}>
-                <tr>
-                  <td>{item.id}</td>
-                  <td>{item.title}</td>
-                  <td>{item.unity} unid.</td>
-                  <td>{item.category}</td>
-                  <td>
-                    <Link to={`/items/${item.id}`} className="button view">
-                      Ver
-                    </Link>
-                    {user.role === "admin" && (
-                      <>
-                        <Link
-                          to={`/items/${item.id}/update`}
-                          className="button update"
-                        >
-                          Atualizar
-                        </Link>
-                        <DeleteButton itemId={item.id} itemName={item.title} />
-                      </>
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            ))
-          ) : (
-            <tbody>
-              <tr>
-                <td colSpan="5">Não há nada aqui!</td>
-              </tr>
-            </tbody>
-          )}
+          {items.length > 0
+            ? items.map((item) => (
+                <tbody key={item.id}>
+                  <tr>
+                    <td>{item.id}</td>
+                    <td>{item.title}</td>
+                    <td>{item.unity} unid.</td>
+                    <td>{item.category}</td>
+                    <td>
+                      <Link to={`/items/${item.id}`} className="button view">
+                        Ver
+                      </Link>
+                      {user.role === "admin" && (
+                        <>
+                          <Link
+                            to={`/items/${item.id}/update`}
+                            className="button update"
+                          >
+                            Atualizar
+                          </Link>
+                          <DeleteButton
+                            itemId={item.id}
+                            itemName={item.title}
+                          />
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              ))
+            : !loading && (
+                <tbody>
+                  <tr>
+                    <td colSpan="5">Não há nada aqui!</td>
+                  </tr>
+                </tbody>
+              )}
         </table>
       </div>
     </>

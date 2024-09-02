@@ -8,11 +8,15 @@ import UpdateItem from "./pages/items/UpdateItem";
 import ItemsLayout from "./pages/items/ItemsLayout";
 import RegisterForm from "./pages/users/RegisterForm";
 import LoginForm from "./pages/users/LoginForm";
-import api from "./api";
 import UserProfile from "./pages/users/UserProfile";
 import UserDashboard from "./pages/users/UserDashboard";
 import EditProfileUser from "./pages/users/EditProfileUser";
+import Forbidden from "./components/Error/Forbidden";
+import PrivateRoute from "./components/Error/PrivateRoute";
+import NotFound from "./components/Error/NotFound";
+import api from "./api";
 
+// Função para buscar itens
 const fetchItem = async ({ params }) => {
   try {
     const response = await api.get(`/items/${params.id}`);
@@ -34,7 +38,11 @@ const router = createHashRouter([
       },
       {
         path: "users",
-        element: <UserDashboard />,
+        element: (
+          <PrivateRoute>
+            <UserDashboard />
+          </PrivateRoute>
+        ),
       },
       {
         path: "users/register",
@@ -46,18 +54,37 @@ const router = createHashRouter([
       },
       {
         path: "users/:id",
-        element: <UserProfile />,
+        element: (
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "users/edit/:id",
-        element: <EditProfileUser />,
+        element: (
+          <PrivateRoute role="admin">
+            <EditProfileUser />
+          </PrivateRoute>
+        ),
       },
       {
         path: "items",
-        element: <ItemsLayout />,
+        element: (
+          <PrivateRoute>
+            <ItemsLayout />
+          </PrivateRoute>
+        ),
         children: [
           { index: true, element: <StockItems /> },
-          { path: "new", element: <CreateItem /> },
+          {
+            path: "new",
+            element: (
+              <PrivateRoute role="admin">
+                <CreateItem />
+              </PrivateRoute>
+            ),
+          },
           {
             path: ":id",
             element: <ShowItem />,
@@ -65,10 +92,22 @@ const router = createHashRouter([
           },
           {
             path: ":id/update",
-            element: <UpdateItem />,
+            element: (
+              <PrivateRoute role="admin">
+                <UpdateItem />
+              </PrivateRoute>
+            ),
             loader: fetchItem,
           },
         ],
+      },
+      {
+        path: "/forbidden",
+        element: <Forbidden />,
+      },
+      {
+        path: "*", // Captura todas as rotas não correspondentes
+        element: <NotFound />,
       },
     ],
   },

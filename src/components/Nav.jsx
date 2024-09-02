@@ -43,14 +43,14 @@ export default function Nav() {
         <span>React Stock</span>
       </Link>
       <div className="buttons">
-        <Link to={"/"}>
-          <button>Início</button>
-        </Link>
-        <Link to={"/items"}>
-          <button>Itens</button>
-        </Link>
         {user ? (
           <>
+            <Link to={"/"}>
+              <button>Início</button>
+            </Link>
+            <Link to={"/items"}>
+              <button>Itens</button>
+            </Link>
             <button onClick={handleProfileClick}>Meu Perfil</button>
             {user.role === "admin" && (
               <Link to={"/users"}>

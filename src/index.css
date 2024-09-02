@@ -475,3 +475,30 @@ footer {
   background-color: #00b0e6;
   transform: scale(1.05);
 }
+
+div.quantity-control {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
+
+div.quantity-control span {
+  margin-right: 2em;
+}
+
+.success-message,
+.error-message {
+  text-align: center;
+  margin-top: 1em;
+  font-weight: bold;
+  color: white;
+}
+
+.success-message {
+  color: #4caf50;
+}
+
+.error-message {
+  color: #ff4d4d;
+}

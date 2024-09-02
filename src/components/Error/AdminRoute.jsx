@@ -17,7 +17,7 @@ const AdminRoute = ({ children }) => {
 };
 
 AdminRoute.propTypes = {
-  children: PropTypes.ReacNode,
+  children: PropTypes.node,
 };
 
 export default AdminRoute;

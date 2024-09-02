@@ -10,7 +10,10 @@ StockContextProvider.propTypes = {
 
 export function StockContextProvider({ children }) {
   const [items, setItems] = useState([]);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   const fetchItems = useCallback(async () => {
     try {
@@ -23,23 +26,7 @@ export function StockContextProvider({ children }) {
 
   useEffect(() => {
     fetchItems();
-
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser && storedUser !== "undefined") {
-      try {
-        const loggedInUser = JSON.parse(storedUser);
-        if (loggedInUser) {
-          setUser(loggedInUser);
-        }
-      } catch (error) {
-        console.error(
-          "Erro ao analisar os dados do usuário do localStorage:",
-          error
-        );
-      }
-    }
-  }, [fetchItems]); // Inclua fetchItems na lista de dependências
+  }, [fetchItems]);
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -133,6 +120,7 @@ export function StockContextProvider({ children }) {
     getItem,
     updateItem,
     deleteItem,
+    fetchItems,
     user,
     loginUser,
     logoutUser,

@@ -6,7 +6,7 @@ import api from "../../api";
 
 export default function UserProfile() {
   const { id } = useParams();
-  const { user, logoutUser } = useStock(); // Obtém o usuário do contexto
+  const { user, logoutUser } = useStock();
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({
     email: "",
@@ -16,6 +16,7 @@ export default function UserProfile() {
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,13 +42,26 @@ export default function UserProfile() {
         });
       } catch (error) {
         setError("Erro ao carregar perfil do usuário.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUser();
   }, [id]);
 
-  // Função para lidar com a edição do perfil (somente para admin)
+  // Limpa notificações e erros após 8 segundos
+  useEffect(() => {
+    if (notification || error) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+        setError(null);
+      }, 8000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [notification, error]);
+
   const handleEditProfile = async () => {
     if (user.role !== "admin") return; // Impede usuários comuns de editar o perfil
 
@@ -78,7 +92,6 @@ export default function UserProfile() {
     }
   };
 
-  // Função para lidar com a alteração de senha
   const handleChangePassword = async () => {
     try {
       await changeUserPassword(id, newPassword);
@@ -91,11 +104,14 @@ export default function UserProfile() {
     }
   };
 
-  // Função para lidar com o logout
   const handleLogout = () => {
     performLogout(logoutUser);
     navigate("/users/login");
   };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   if (!currentUser.email) {
     return (
@@ -123,7 +139,6 @@ export default function UserProfile() {
         <p>
           <strong>Role:</strong> {currentUser.role}
         </p>
-        {/* Apenas mostra os campos de edição se o usuário for admin */}
         {user.role === "admin" && (
           <>
             <input

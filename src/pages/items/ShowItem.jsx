@@ -45,8 +45,10 @@ export default function ShowItem() {
   };
 
   const handleDecrement = () => {
-    if (quantityChange > 0) {
+    if (item.unity + quantityChange > 0) {
       setQuantityChange(quantityChange - 1);
+    } else {
+      setError("Não é possível reduzir abaixo de zero.");
     }
   };
 

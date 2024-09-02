@@ -502,3 +502,32 @@ div.quantity-control span {
 .error-message {
   color: #ff4d4d;
 }
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.search-container .input-field {
+  width: 200px;
+  padding: 0.5em;
+  margin-right: 0.5em;
+  border-radius: 0.3em;
+  border: none;
+}
+
+.search-container .button {
+  padding: 0.5em 1em;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 0.3em;
+  cursor: pointer;
+  margin-bottom: 0.5em;
+}
+
+.search-container .button:hover {
+  background-color: #005f7f;
+}

@@ -2,14 +2,58 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import useStockItems from "../../../hooks/useStockItems";
 import DeleteButton from "../../../components/DeleteButton";
+import { useState } from "react";
 import { useStock } from "../../../context/useStock";
+import api from "../../../api";
 
 export default function StockItems() {
-  const { items } = useStockItems();
-  const { user } = useStock(); // Obtenha o usuário do contexto
+  const { items: initialItems } = useStockItems();
+  const { user } = useStock();
+  const [items, setItems] = useState(initialItems);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSearch = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await api.get(`/items/search/${searchTerm}`);
+      setItems(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar itens:", error);
+      setError("Erro ao buscar itens. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleShowAll = () => {
+    setItems(initialItems);
+    setSearchTerm("");
+  };
 
   return (
     <>
+      <div className="search-container">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Buscar por ID ou Nome"
+          className="input-field"
+        />
+        <button onClick={handleSearch} className="button">
+          Buscar
+        </button>
+        <button onClick={handleShowAll} className="button">
+          Mostrar Todos
+        </button>
+      </div>
+
+      {loading && <p>Carregando...</p>}
+      {error && <p className="error-message">{error}</p>}
+
       <div className="table-div">
         <table>
           <thead>
@@ -51,7 +95,7 @@ export default function StockItems() {
           ) : (
             <tbody>
               <tr>
-                <td>Não há nada aqui!</td>
+                <td colSpan="5">Não há nada aqui!</td>
               </tr>
             </tbody>
           )}

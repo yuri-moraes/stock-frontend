@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "@/api";
+import InputField from "@/components/InputField";
+import ErrorMessage from "@/components/ErrorMessage";
+import SubmitButton from "@/components/SubmitButton";
+import { validateEmail, validatePassword } from "@/hooks/ValidationHelpers";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -11,17 +15,6 @@ export default function RegisterForm() {
   const [passwordError, setPasswordError] = useState("");
 
   const navigate = useNavigate();
-
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const validatePassword = (password) => {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,55 +67,28 @@ export default function RegisterForm() {
       <h1 className="text-2xl font-bold mb-6 text-white">
         Cadastro de Usuário
       </h1>
-      <div className="mb-4 w-full">
-        <label className="block text-gray-300 text-sm font-bold mb-2">
-          Nome:
-        </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div className="mb-4 w-full">
-        <label className="block text-gray-300 text-sm font-bold mb-2">
-          Email:
-        </label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {emailError && (
-          <p className="text-red-500 text-sm mt-1">{emailError}</p>
-        )}
-      </div>
-      <div className="mb-6 w-full">
-        <label className="block text-gray-300 text-sm font-bold mb-2">
-          Senha:
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {passwordError && (
-          <p className="text-red-500 text-sm mt-1">{passwordError}</p>
-        )}
-      </div>
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-      <button
-        type="submit"
-        className="w-full py-2 px-4 bg-white text-gray-800 font-bold rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Cadastrar
-      </button>
+      <InputField
+        label="Nome:"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <InputField
+        label="Email:"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {emailError && <ErrorMessage message={emailError} />}
+      <InputField
+        label="Senha:"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      {passwordError && <ErrorMessage message={passwordError} />}
+      {error && <ErrorMessage message={error} />}
+      <SubmitButton text="Cadastrar" />
     </form>
   );
 }

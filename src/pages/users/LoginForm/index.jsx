@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "@/api";
 import { useStock } from "@/context/useStock";
+import InputField from "@/components/InputField";
+import ErrorMessage from "@/components/ErrorMessage";
+import LoginButton from "../LoginForm/LoginButton";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -12,7 +15,6 @@ export default function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError(null);
 
     try {
@@ -50,37 +52,20 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
     >
       <h1 className="text-2xl font-bold mb-6 text-white">Login</h1>
-      <div className="mb-4 w-full">
-        <label className="block text-gray-300 text-sm font-bold mb-2">
-          Email:
-        </label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full px-3 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div className="mb-6 w-full">
-        <label className="block text-gray-300 text-sm font-bold mb-2">
-          Senha:
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full px-3 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-      <button
-        type="submit"
-        className="w-full py-2 px-4 bg-white text-gray-800 font-bold rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Entrar
-      </button>
+      <InputField
+        label="Email:"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <InputField
+        label="Senha:"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      {error && <ErrorMessage message={error} />}
+      <LoginButton />
     </form>
   );
 }

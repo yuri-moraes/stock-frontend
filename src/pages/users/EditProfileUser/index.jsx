@@ -4,6 +4,9 @@ import { changeUserPassword } from "@/hooks/userUtils";
 import api from "@/api";
 import DeleteUserButton from "@/components/DeleteUserButton";
 import { useStock } from "@/context/useStock";
+import EditProfileForm from "../EditProfileUser/EditProfileForm";
+import ChangePasswordForm from "../EditProfileUser//ChangePasswordForm";
+import Notification from "../../../components/Notification";
 
 export default function EditProfileUser() {
   const { id } = useParams();
@@ -56,7 +59,6 @@ export default function EditProfileUser() {
     );
   }
 
-  // Função para lidar com a edição do perfil
   const handleEditProfile = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -85,7 +87,6 @@ export default function EditProfileUser() {
     }
   };
 
-  // Função para lidar com a alteração de senha
   const handleChangePassword = async () => {
     try {
       await changeUserPassword(id, newPassword, setUpdatedUser);
@@ -98,7 +99,6 @@ export default function EditProfileUser() {
     }
   };
 
-  // Função de callback após a exclusão do usuário
   const handleUserDeleted = () => {
     alert("Usuário deletado com sucesso.");
     navigate("/users");
@@ -109,62 +109,21 @@ export default function EditProfileUser() {
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-bold">Editar Perfil do Usuário</h1>
       </div>
-      <div className="space-y-4">
-        <input
-          type="text"
-          value={updatedUser.name}
-          onChange={(e) =>
-            setUpdatedUser({ ...updatedUser, name: e.target.value })
-          }
-          placeholder="Nome"
-          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <EditProfileForm
+        updatedUser={updatedUser}
+        setUpdatedUser={setUpdatedUser}
+        handleEditProfile={handleEditProfile}
+      />
+      <div className="grid gap-4">
+        <ChangePasswordForm
+          newPassword={newPassword}
+          setNewPassword={setNewPassword}
+          handleChangePassword={handleChangePassword}
         />
-        <input
-          type="email"
-          value={updatedUser.email}
-          onChange={(e) =>
-            setUpdatedUser({ ...updatedUser, email: e.target.value })
-          }
-          placeholder="Email"
-          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled
-        />
-        <input
-          type="text"
-          value={updatedUser.role}
-          onChange={(e) =>
-            setUpdatedUser({ ...updatedUser, role: e.target.value })
-          }
-          placeholder="Role"
-          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
-          onClick={handleEditProfile}
-        >
-          Salvar Alterações
-        </button>
-      </div>
-      <div className="mt-6 space-y-4">
-        <input
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          placeholder="Nova Senha"
-          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleChangePassword}
-        >
-          Alterar Senha
-        </button>
         <DeleteUserButton userId={id} onDelete={handleUserDeleted} />
       </div>
-      {notification && (
-        <p className="text-green-500 text-center mt-4">{notification}</p>
-      )}
-      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+      <Notification message={notification} type="success" />
+      <Notification message={error} type="error" />
     </div>
   );
 }

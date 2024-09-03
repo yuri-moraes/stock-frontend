@@ -35,7 +35,10 @@ export default function DeleteUserButton({ userId, onDelete }) {
   };
 
   return (
-    <button className="delete-button" onClick={handleDelete}>
+    <button
+      className="bg-red-500 text-white border-none py-2 px-4 rounded-md cursor-pointer transition-all duration-300 transform hover:bg-red-700 hover:scale-105 active:bg-red-800 active:scale-95 text-lg"
+      onClick={handleDelete}
+    >
       Deletar
     </button>
   );

@@ -16,30 +16,30 @@ export default function ResultDisplay() {
     return items.filter((item) => item.unity < 10).length;
   };
 
-  const recentItems = getRecentItems(items); // Usa a função importada
+  const recentItems = getRecentItems(items);
   const recentTotal = recentItems.length;
 
   return (
-    <div className="resultsDisplay">
+    <div className="flex justify-center">
       <Display
         text={"Diversidade de itens"}
         number={totalDiversity()}
-        className={"display"}
+        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
       />
       <Display
         text={"Inventário total"}
         number={inventoryTotal}
-        className={"display"}
+        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
       />
       <Display
         text={"Itens recentes"}
         number={recentTotal}
-        className={"display"}
+        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
       />
       <Display
         text={"Itens acabando"}
         number={countItemsLowUnity()}
-        className={"display"}
+        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
       />
     </div>
   );

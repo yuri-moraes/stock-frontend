@@ -48,10 +48,12 @@ export default function ItemForm({ itemToUpdate }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="row">
-        <div>
-          <label htmlFor="title">Título</label>
+    <form onSubmit={handleSubmit} className="mx-auto p-5">
+      <div className="flex flex-wrap gap-5">
+        <div className="flex flex-col flex-1 min-w-[200px]">
+          <label htmlFor="title" className="mb-2 font-bold text-white">
+            Título
+          </label>
           <input
             type="text"
             name="title"
@@ -60,10 +62,13 @@ export default function ItemForm({ itemToUpdate }) {
             required
             value={item.title}
             onChange={handleChange}
+            className="bg-gray-900 p-2 rounded text-white focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div>
-          <label htmlFor="unity">Unidades</label>
+        <div className="flex flex-col flex-1 min-w-[200px]">
+          <label htmlFor="unity" className="mb-2 font-bold text-white">
+            Unidades
+          </label>
           <input
             type="number"
             name="unity"
@@ -73,10 +78,13 @@ export default function ItemForm({ itemToUpdate }) {
             step={1}
             value={item.unity}
             onChange={handleChange}
+            className="bg-gray-900 p-2 rounded text-white focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div>
-          <label htmlFor="price">Preço</label>
+        <div className="flex flex-col flex-1 min-w-[200px]">
+          <label htmlFor="price" className="mb-2 font-bold text-white">
+            Preço
+          </label>
           <input
             type="number"
             name="price"
@@ -86,16 +94,20 @@ export default function ItemForm({ itemToUpdate }) {
             step={0.01}
             value={item.price}
             onChange={handleChange}
+            className="bg-gray-900 p-2 rounded text-white focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div>
-          <label htmlFor="category">Categoria</label>
+        <div className="flex flex-col flex-1 min-w-[200px]">
+          <label htmlFor="category" className="mb-2 font-bold text-white">
+            Categoria
+          </label>
           <select
             name="category"
             id="category"
             required
             value={item.category}
             onChange={handleChange}
+            className="bg-gray-900 p-2 rounded text-white focus:outline-none focus:border-blue-500"
           >
             <option disabled value="">
               Selecione uma categoria...
@@ -112,8 +124,10 @@ export default function ItemForm({ itemToUpdate }) {
           </select>
         </div>
       </div>
-      <div className="form-control">
-        <label htmlFor="description">Descrição</label>
+      <div className="flex flex-col mt-4">
+        <label htmlFor="description" className="mb-2 font-bold text-white">
+          Descrição
+        </label>
         <textarea
           name="description"
           id="description"
@@ -121,9 +135,15 @@ export default function ItemForm({ itemToUpdate }) {
           rows={6}
           value={item.description}
           onChange={handleChange}
+          className="bg-gray-900 p-2 rounded text-white focus:outline-none focus:border-blue-500 resize-vertical"
         ></textarea>
       </div>
-      <button className="descriptionBtn">Salvar</button>
+      <button
+        type="submit"
+        className="w-full mt-5 py-3 text-lg text-white bg-blue-500 rounded hover:bg-blue-700 transition-colors"
+      >
+        Salvar
+      </button>
     </form>
   );
 }

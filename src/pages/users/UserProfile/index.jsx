@@ -50,7 +50,6 @@ export default function UserProfile() {
     fetchUser();
   }, [id]);
 
-  // Limpa notificações e erros após 8 segundos
   useEffect(() => {
     if (notification || error) {
       const timer = setTimeout(() => {
@@ -63,7 +62,7 @@ export default function UserProfile() {
   }, [notification, error]);
 
   const handleEditProfile = async () => {
-    if (user.role !== "admin") return; // Impede usuários comuns de editar o perfil
+    if (user.role !== "admin") return;
 
     try {
       const token = localStorage.getItem("token");
@@ -110,12 +109,12 @@ export default function UserProfile() {
   };
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return <div className="text-white">Carregando...</div>;
   }
 
   if (!currentUser.email) {
     return (
-      <div className="user-profile error-message">
+      <div className="bg-red-500 text-white p-4 rounded">
         <p>
           Perfil não encontrado ou você não tem permissão para acessar esta
           página.
@@ -125,18 +124,18 @@ export default function UserProfile() {
   }
 
   return (
-    <div className="user-profile">
-      <div className="profile-header">
-        <h1>Perfil do Usuário</h1>
+    <div className="bg-gray-800 p-8 rounded-lg shadow-md max-w-lg mx-auto text-white">
+      <div className="text-center mb-4">
+        <h1 className="text-2xl font-semibold">Perfil do Usuário</h1>
       </div>
-      <div className="profile-details">
-        <p>
+      <div className="mb-6">
+        <p className="mb-2">
           <strong>Nome:</strong> {currentUser.name}
         </p>
-        <p>
+        <p className="mb-2">
           <strong>Email:</strong> {currentUser.email}
         </p>
-        <p>
+        <p className="mb-4">
           <strong>Role:</strong> {currentUser.role}
         </p>
         {user.role === "admin" && (
@@ -148,7 +147,7 @@ export default function UserProfile() {
                 setCurrentUser({ ...currentUser, name: e.target.value })
               }
               placeholder="Nome"
-              className="input-field"
+              className="w-full px-3 mb-4 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="email"
@@ -157,7 +156,7 @@ export default function UserProfile() {
                 setCurrentUser({ ...currentUser, email: e.target.value })
               }
               placeholder="Email"
-              className="input-field"
+              className="w-full px-3 mb-4 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled
             />
             <input
@@ -167,31 +166,46 @@ export default function UserProfile() {
                 setCurrentUser({ ...currentUser, role: e.target.value })
               }
               placeholder="Role"
-              className="input-field"
+              className="w-full px-3 mb-4 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button className="button is-small" onClick={handleEditProfile}>
+            <button
+              className="w-full p-2 bg-blue-500 rounded hover:bg-blue-400 transition duration-300"
+              onClick={handleEditProfile}
+            >
               Salvar Alterações
             </button>
           </>
         )}
       </div>
-      <div className="profile-actions">
+      <div className="mb-6">
         <input
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="Nova Senha"
-          className="input-field"
+          className="w-full px-3 mb-4 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button className="button is-small" onClick={handleChangePassword}>
+        <button
+          className="w-full p-2 bg-gray-900 rounded hover:bg-gray-500 transition duration-300 mb-2"
+          onClick={handleChangePassword}
+        >
           Alterar Senha
         </button>
-        <button className="button is-small" onClick={handleLogout}>
+        <button
+          className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600 transition duration-300"
+          onClick={handleLogout}
+        >
           Sair
         </button>
       </div>
-      {notification && <p className="notification-message">{notification}</p>}
-      {error && <p className="error-message">{error}</p>}
+      {notification && (
+        <p className="text-green-500 text-center font-semibold">
+          {notification}
+        </p>
+      )}
+      {error && (
+        <p className="text-red-500 text-center font-semibold">{error}</p>
+      )}
     </div>
   );
 }

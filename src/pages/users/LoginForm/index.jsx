@@ -45,30 +45,40 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
-      <h1>Login</h1>
-      <div className="form-group">
-        <label>Email:</label>
+    <form
+      className="flex flex-col items-center max-w-md mx-auto mt-10 p-8 bg-gray-800 shadow-md rounded-lg"
+      onSubmit={handleSubmit}
+    >
+      <h1 className="text-2xl font-bold mb-6 text-white">Login</h1>
+      <div className="mb-4 w-full">
+        <label className="block text-gray-300 text-sm font-bold mb-2">
+          Email:
+        </label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="input-field"
+          className="w-full px-3 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div className="form-group">
-        <label>Senha:</label>
+      <div className="mb-6 w-full">
+        <label className="block text-gray-300 text-sm font-bold mb-2">
+          Senha:
+        </label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="input-field"
+          className="w-full px-3 py-2 bg-gray-600 border border-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      {error && <p className="error-message">{error}</p>}
-      <button type="submit" className="button">
+      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+      <button
+        type="submit"
+        className="w-full py-2 px-4 bg-white text-gray-800 font-bold rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
         Entrar
       </button>
     </form>

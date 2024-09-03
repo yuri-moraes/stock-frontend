@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import "./index.css";
 import useStockItems from "@/hooks/useStockItems";
 import DeleteButton from "@/components/DeleteButton";
 import { useState, useEffect } from "react";
@@ -63,53 +62,62 @@ export default function StockItems() {
 
   return (
     <>
-      <div className="search-container">
+      <div className="flex justify-center items-center mb-4 space-x-4">
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Buscar por ID ou Nome"
-          className="input-field"
+          className="bg-gray-900 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button onClick={handleSearch} className="button">
+        <button
+          onClick={handleSearch}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        >
           Buscar
         </button>
-        <button onClick={handleShowAll} className="button">
+        <button
+          onClick={handleShowAll}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        >
           Mostrar Todos
         </button>
       </div>
 
-      {loading && <p>Carregando...</p>}
-      {error && <p className="error-message">{error}</p>}
+      {loading && <p className="text-center text-white">Carregando...</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
 
-      <div className="table-div">
-        <table>
-          <thead>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse mb-4">
+          <thead className="bg-gray-800">
             <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Em Estoque</th>
-              <th>Categoria</th>
-              <th>Ações</th>
+              <th className="text-left text-white p-4">ID</th>
+              <th className="text-left text-white p-4">Nome</th>
+              <th className="text-left text-white p-4">Em Estoque</th>
+              <th className="text-left text-white p-4">Categoria</th>
+              <th className="text-left text-white p-4">Ações</th>
             </tr>
           </thead>
           {items.length > 0
             ? items.map((item) => (
                 <tbody key={item.id}>
-                  <tr>
-                    <td>{item.id}</td>
-                    <td>{item.title}</td>
-                    <td>{item.unity} unid.</td>
-                    <td>{item.category}</td>
-                    <td>
-                      <Link to={`/items/${item.id}`} className="button view">
+                  <tr className="border-t border-gray-600 hover:bg-gray-700 transform hover:-translate-y-1 transition-all duration-300">
+                    <td className="p-4 text-white">{item.id}</td>
+                    <td className="p-4 text-white">{item.title}</td>
+                    <td className="p-4 text-white">{item.unity} unid.</td>
+                    <td className="p-4 text-white">{item.category}</td>
+                    <td className="p-4">
+                      <Link
+                        to={`/items/${item.id}`}
+                        className="px-4 py-2 mr-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+                      >
                         Ver
                       </Link>
                       {user.role === "admin" && (
                         <>
                           <Link
                             to={`/items/${item.id}/update`}
-                            className="button update"
+                            className="px-4 py-2 mr-4 bg-gray-700 text-white rounded-md hover:bg-gray-700 transition-colors duration-200"
                           >
                             Atualizar
                           </Link>
@@ -126,7 +134,9 @@ export default function StockItems() {
             : !loading && (
                 <tbody>
                   <tr>
-                    <td colSpan="5">Não há nada aqui!</td>
+                    <td colSpan="5" className="text-center text-white p-4">
+                      Não há nada aqui!
+                    </td>
                   </tr>
                 </tbody>
               )}

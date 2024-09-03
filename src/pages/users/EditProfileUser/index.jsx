@@ -49,7 +49,11 @@ export default function EditProfileUser() {
   }, [id]);
 
   if (user.role !== "admin") {
-    return <div>Você não tem permissão para acessar esta página.</div>;
+    return (
+      <div className="text-red-500 text-center mt-4">
+        Você não tem permissão para acessar esta página.
+      </div>
+    );
   }
 
   // Função para lidar com a edição do perfil
@@ -101,11 +105,11 @@ export default function EditProfileUser() {
   };
 
   return (
-    <div className="user-profile">
-      <div className="profile-header">
-        <h1>Editar Perfil do Usuário</h1>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-lg text-white">
+      <div className="mb-6 text-center">
+        <h1 className="text-2xl font-bold">Editar Perfil do Usuário</h1>
       </div>
-      <div className="profile-details">
+      <div className="space-y-4">
         <input
           type="text"
           value={updatedUser.name}
@@ -113,7 +117,7 @@ export default function EditProfileUser() {
             setUpdatedUser({ ...updatedUser, name: e.target.value })
           }
           placeholder="Nome"
-          className="input-field"
+          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="email"
@@ -122,7 +126,7 @@ export default function EditProfileUser() {
             setUpdatedUser({ ...updatedUser, email: e.target.value })
           }
           placeholder="Email"
-          className="input-field"
+          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           disabled
         />
         <input
@@ -132,27 +136,35 @@ export default function EditProfileUser() {
             setUpdatedUser({ ...updatedUser, role: e.target.value })
           }
           placeholder="Role"
-          className="input-field"
+          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button className="button is-small" onClick={handleEditProfile}>
+        <button
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+          onClick={handleEditProfile}
+        >
           Salvar Alterações
         </button>
       </div>
-      <div className="profile-actions">
+      <div className="mt-6 space-y-4">
         <input
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="Nova Senha"
-          className="input-field"
+          className="w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button className="button is-small" onClick={handleChangePassword}>
+        <button
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleChangePassword}
+        >
           Alterar Senha
         </button>
         <DeleteUserButton userId={id} onDelete={handleUserDeleted} />
       </div>
-      {notification && <p className="notification-message">{notification}</p>}
-      {error && <p className="error-message">{error}</p>}
+      {notification && (
+        <p className="text-green-500 text-center mt-4">{notification}</p>
+      )}
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </div>
   );
 }

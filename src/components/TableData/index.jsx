@@ -10,10 +10,13 @@ export default function TableData() {
   // Função para renderizar itens recentes
   const renderRecentItems = () => {
     return recentItems.map((item) => (
-      <tr key={item.id}>
-        <td>{item.title}</td>
-        <td>
-          <Link to={`/items/${item.id}`} className="button view">
+      <tr key={item.id} className="border-t border-gray-700">
+        <td className="p-3">{item.title}</td>
+        <td className="p-3">
+          <Link
+            to={`/items/${item.id}`}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
             Ver
           </Link>
         </td>
@@ -27,17 +30,22 @@ export default function TableData() {
     if (lowUnityItems.length === 0) {
       return (
         <tr>
-          <td colSpan="3">Não há itens acabando!</td>
+          <td colSpan="3" className="p-3">
+            Não há itens acabando!
+          </td>
         </tr>
       );
     }
 
     return lowUnityItems.map((item) => (
-      <tr key={item.id}>
-        <td>{item.title}</td>
-        <td>{item.unity}</td>
-        <td>
-          <Link to={`/items/${item.id}`} className="button view">
+      <tr key={item.id} className="border-t border-gray-700">
+        <td className="p-3">{item.title}</td>
+        <td className="p-3">{item.unity}</td>
+        <td className="p-3">
+          <Link
+            to={`/items/${item.id}`}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
             Ver
           </Link>
         </td>
@@ -46,22 +54,22 @@ export default function TableData() {
   };
 
   return (
-    <div className="table-container">
-      <table>
+    <div className="flex justify-around w-full my-0.5 gap-4 px-6">
+      <table className="w-full border-collapse my-5">
         <thead>
           <tr>
-            <th>Itens Recentes</th>
-            <th>Ações</th>
+            <th className="bg-gray-800 p-3 text-left">Itens Recentes</th>
+            <th className="bg-gray-800 p-3 text-left">Ações</th>
           </tr>
         </thead>
         <tbody>{renderRecentItems()}</tbody>
       </table>
-      <table>
+      <table className="w-full border-collapse my-5">
         <thead>
           <tr>
-            <th>Itens Acabando</th>
-            <th>Qtd.</th>
-            <th>Ações</th>
+            <th className="bg-gray-800 p-3 text-left">Itens Acabando</th>
+            <th className="bg-gray-800 p-3 text-left">Qtd.</th>
+            <th className="bg-gray-800 p-3 text-left">Ações</th>
           </tr>
         </thead>
         <tbody>{renderLowUnityItems()}</tbody>

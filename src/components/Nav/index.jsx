@@ -38,34 +38,38 @@ export default function Nav() {
   };
 
   return (
-    <nav>
+    <nav className="flex items-center justify-between w-full py-4">
       <Link to={"/"}>
-        <span>React Stock</span>
+        <span className="text-white text-lg mx-4">React Stock</span>
       </Link>
-      <div className="buttons">
+      <div className="flex gap-8 mx-4">
         {user ? (
           <>
             <Link to={"/"}>
-              <button>Início</button>
+              <button className="text-white mx-0.5">Início</button>
             </Link>
             <Link to={"/items"}>
-              <button>Itens</button>
+              <button className="text-white mx-0.5">Itens</button>
             </Link>
-            <button onClick={handleProfileClick}>Meu Perfil</button>
+            <button className="text-white mx-0.5" onClick={handleProfileClick}>
+              Meu Perfil
+            </button>
             {user.role === "admin" && (
               <Link to={"/users"}>
-                <button>Dashboard</button>
+                <button className="text-white mx-0.5">Dashboard</button>
               </Link>
             )}
-            <button onClick={handleLogout}>Logout</button>
+            <button className="text-white mx-0.5" onClick={handleLogout}>
+              Logout
+            </button>
           </>
         ) : (
           <>
             <Link to={"/users/login"}>
-              <button>Login</button>
+              <button className="text-white mx-0.5">Login</button>
             </Link>
             <Link to={"/users/register"}>
-              <button>Cadastro</button>
+              <button className="text-white mx-0.5">Cadastro</button>
             </Link>
           </>
         )}

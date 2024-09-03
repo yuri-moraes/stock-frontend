@@ -17,11 +17,13 @@ export default function DeleteButton({ itemId, itemName }) {
       navigate("/items");
     }
   };
+
   return (
-    <>
-      <button className="button delete" onClick={handleDelete}>
-        Remover
-      </button>
-    </>
+    <button
+      className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200"
+      onClick={handleDelete}
+    >
+      Remover
+    </button>
   );
 }

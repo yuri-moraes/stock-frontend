@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
+import { useNavigate } from "react-router-dom";
 import api from "@/api";
 
 export default function RegisterForm() {
@@ -10,7 +10,7 @@ export default function RegisterForm() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const navigate = useNavigate(); // Inicializa o hook useNavigate
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,18 +26,15 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Resetando erros
     setEmailError("");
     setPasswordError("");
     setError(null);
 
-    // Validação de email
     if (!validateEmail(email)) {
       setEmailError("Por favor, insira um e-mail válido.");
       return;
     }
 
-    // Validação de senha
     if (!validatePassword(password)) {
       setPasswordError(
         "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial."
@@ -53,12 +50,10 @@ export default function RegisterForm() {
       });
       console.log("Usuário cadastrado com sucesso:", response.data);
 
-      // Limpa os campos do formulário após o cadastro
       setName("");
       setEmail("");
       setPassword("");
 
-      // Redireciona o usuário para a tela de login após o cadastro bem-sucedido
       navigate("/users/login");
     } catch (error) {
       const errorMessage =
@@ -72,42 +67,60 @@ export default function RegisterForm() {
   };
 
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
-      <h1>Cadastro de Usuário</h1>
-      <div className="form-group">
-        <label>Nome:</label>
+    <form
+      className="flex flex-col items-center max-w-md mx-auto mt-10 p-8 bg-gray-800 shadow-md rounded-lg"
+      onSubmit={handleSubmit}
+    >
+      <h1 className="text-2xl font-bold mb-6 text-white">
+        Cadastro de Usuário
+      </h1>
+      <div className="mb-4 w-full">
+        <label className="block text-gray-300 text-sm font-bold mb-2">
+          Nome:
+        </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="input-field"
+          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div className="form-group">
-        <label>Email:</label>
+      <div className="mb-4 w-full">
+        <label className="block text-gray-300 text-sm font-bold mb-2">
+          Email:
+        </label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="input-field"
+          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        {emailError && <p className="error-message">{emailError}</p>}
+        {emailError && (
+          <p className="text-red-500 text-sm mt-1">{emailError}</p>
+        )}
       </div>
-      <div className="form-group">
-        <label>Senha:</label>
+      <div className="mb-6 w-full">
+        <label className="block text-gray-300 text-sm font-bold mb-2">
+          Senha:
+        </label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="input-field"
+          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        {passwordError && <p className="error-message">{passwordError}</p>}
+        {passwordError && (
+          <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+        )}
       </div>
-      {error && <p className="error-message">{error}</p>}
-      <button type="submit" className="button">
+      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+      <button
+        type="submit"
+        className="w-full py-2 px-4 bg-white text-gray-800 font-bold rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
         Cadastrar
       </button>
     </form>

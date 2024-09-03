@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStock } from "@/context/useStock";
 
 export default function Nav() {
   const { user, loginUser, logoutUser } = useStock();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef(null); // Referência para o elemento de navegação
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -25,6 +26,33 @@ export default function Nav() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false); // Fecha o menu se o clique for fora do menu
+      }
+    };
+
+    const handleTouchStart = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false); // Fecha o menu se o toque for fora do menu
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleTouchStart);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleTouchStart);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleTouchStart);
+    };
+  }, [isMobileMenuOpen]);
+
   const handleLogout = () => {
     logoutUser();
     navigate("/users/login");
@@ -39,7 +67,10 @@ export default function Nav() {
   };
 
   return (
-    <nav className="flex items-center justify-between w-full py-4 px-4 bg-gray-600">
+    <nav
+      ref={navRef}
+      className="flex items-center justify-between w-full py-4 px-4 bg-gray-600"
+    >
       <Link to={"/"}>
         <span className="text-white text-lg">React Stock</span>
       </Link>

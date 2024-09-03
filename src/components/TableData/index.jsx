@@ -4,7 +4,6 @@ import { getRecentItems } from "@/hooks/getRecentItems";
 
 export default function TableData() {
   const { items } = useStock();
-
   const recentItems = getRecentItems(items);
 
   // Função para renderizar itens recentes
@@ -30,7 +29,7 @@ export default function TableData() {
     if (lowUnityItems.length === 0) {
       return (
         <tr>
-          <td colSpan="3" className="p-3">
+          <td colSpan="3" className="p-3 text-center">
             Não há itens acabando!
           </td>
         </tr>
@@ -54,26 +53,30 @@ export default function TableData() {
   };
 
   return (
-    <div className="flex justify-around w-full my-0.5 gap-4 px-6">
-      <table className="w-full border-collapse my-5">
-        <thead>
-          <tr>
-            <th className="bg-gray-800 p-3 text-left">Itens Recentes</th>
-            <th className="bg-gray-800 p-3 text-left">Ações</th>
-          </tr>
-        </thead>
-        <tbody>{renderRecentItems()}</tbody>
-      </table>
-      <table className="w-full border-collapse my-5">
-        <thead>
-          <tr>
-            <th className="bg-gray-800 p-3 text-left">Itens Acabando</th>
-            <th className="bg-gray-800 p-3 text-left">Qtd.</th>
-            <th className="bg-gray-800 p-3 text-left">Ações</th>
-          </tr>
-        </thead>
-        <tbody>{renderLowUnityItems()}</tbody>
-      </table>
+    <div className="flex flex-col md:flex-row justify-around w-full my-0.5 gap-4 px-6">
+      <div className="overflow-x-auto w-full md:w-1/2">
+        <table className="w-full border-collapse my-5">
+          <thead>
+            <tr>
+              <th className="bg-gray-800 p-3 text-left">Itens Recentes</th>
+              <th className="bg-gray-800 p-3 text-left">Ações</th>
+            </tr>
+          </thead>
+          <tbody>{renderRecentItems()}</tbody>
+        </table>
+      </div>
+      <div className="overflow-x-auto w-full md:w-1/2">
+        <table className="w-full border-collapse my-5">
+          <thead>
+            <tr>
+              <th className="bg-gray-800 p-3 text-left">Itens Acabando</th>
+              <th className="bg-gray-800 p-3 text-left">Qtd.</th>
+              <th className="bg-gray-800 p-3 text-left">Ações</th>
+            </tr>
+          </thead>
+          <tbody>{renderLowUnityItems()}</tbody>
+        </table>
+      </div>
     </div>
   );
 }

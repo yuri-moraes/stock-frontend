@@ -20,26 +20,26 @@ export default function ResultDisplay() {
   const recentTotal = recentItems.length;
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center items-center sm:space-x-2 space-y-4 sm:space-y-0 p-4">
       <Display
         text={"Diversidade de itens"}
         number={totalDiversity()}
-        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
+        className="bg-gray-800 p-5 m-2.5 w-full sm:w-72 text-center rounded-lg"
       />
       <Display
         text={"Inventário total"}
         number={inventoryTotal}
-        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
+        className="bg-gray-800 p-5 m-2.5 w-full sm:w-72 text-center rounded-lg"
       />
       <Display
         text={"Itens recentes"}
         number={recentTotal}
-        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
+        className="bg-gray-800 p-5 m-2.5 w-full sm:w-72 text-center rounded-lg"
       />
       <Display
         text={"Itens acabando"}
         number={countItemsLowUnity()}
-        className="bg-gray-800 p-5 m-2.5 w-72 text-center rounded-lg"
+        className="bg-gray-800 p-5 m-2.5 w-full sm:w-72 text-center rounded-lg"
       />
     </div>
   );

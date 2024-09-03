@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStock } from "@/context/useStock";
 
 export default function Nav() {
   const { user, loginUser, logoutUser } = useStock();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -22,7 +23,7 @@ export default function Nav() {
         );
       }
     }
-  }, []); // Certifique-se de que o efeito só roda uma vez ao montar o componente
+  }, []);
 
   const handleLogout = () => {
     logoutUser();
@@ -38,11 +39,36 @@ export default function Nav() {
   };
 
   return (
-    <nav className="flex items-center justify-between w-full py-4">
+    <nav className="flex items-center justify-between w-full py-4 px-4 bg-gray-600">
       <Link to={"/"}>
-        <span className="text-white text-lg mx-4">React Stock</span>
+        <span className="text-white text-lg">React Stock</span>
       </Link>
-      <div className="flex gap-8 mx-4">
+      <div className="md:hidden">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="text-white focus:outline-none"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        className={`flex-col md:flex md:flex-row gap-4 mx-4 ${
+          isMobileMenuOpen ? "flex" : "hidden"
+        } md:flex`}
+      >
         {user ? (
           <>
             <Link to={"/"}>

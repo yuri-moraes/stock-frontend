@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import DeleteButton from "@/components/DeleteButton";
 
-function ItemRow({ item, user }) {
+function ItemRow({ item, user, onDelete, refreshItems }) {
   return (
     <tbody>
       <tr className="border-t border-gray-600 hover:bg-gray-700 transform hover:-translate-y-1 transition-all duration-300">
@@ -25,7 +25,12 @@ function ItemRow({ item, user }) {
               >
                 Atualizar
               </Link>
-              <DeleteButton itemId={item.id} itemName={item.title} />
+              <DeleteButton
+                itemId={item.id}
+                itemName={item.title}
+                onDelete={onDelete}
+                refreshItems={refreshItems}
+              />
             </>
           )}
         </td>
@@ -42,6 +47,8 @@ ItemRow.propTypes = {
     category: PropTypes.string.isRequired,
   }).isRequired,
   user: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  refreshItems: PropTypes.func.isRequired,
 };
 
 export default ItemRow;

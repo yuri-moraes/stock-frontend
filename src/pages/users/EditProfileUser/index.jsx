@@ -6,7 +6,7 @@ import DeleteUserButton from "@/components/DeleteUserButton";
 import { useStock } from "@/context/useStock";
 import EditProfileForm from "../EditProfileUser/EditProfileForm";
 import ChangePasswordForm from "../EditProfileUser//ChangePasswordForm";
-import Notification from "../../../components/Notification";
+import Notification from "@/components/Notification";
 
 export default function EditProfileUser() {
   const { id } = useParams();

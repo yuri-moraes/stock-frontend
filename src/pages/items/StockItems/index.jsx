@@ -15,21 +15,21 @@ export default function StockItems() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const loadItems = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await api.get("/items");
-        setItems(response.data);
-      } catch (error) {
-        console.error("Erro ao carregar itens:", error);
-        setError("Erro ao carregar itens. Tente novamente.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadItems = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await api.get("/items");
+      setItems(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar itens:", error);
+      setError("Erro ao carregar itens. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadItems();
   }, [fetchItems]);
 
@@ -62,6 +62,11 @@ export default function StockItems() {
     }
   };
 
+  // Função de callback para buscar novamente os itens
+  const refreshItems = async () => {
+    await loadItems();
+  };
+
   return (
     <>
       <SearchBar
@@ -72,7 +77,13 @@ export default function StockItems() {
       />
       {loading && <LoadingIndicator />}
       {error && <ErrorMessage message={error} />}
-      <ItemTable items={items} user={user} loading={loading} />
+      <ItemTable
+        items={items}
+        setItems={setItems}
+        user={user}
+        loading={loading}
+        refreshItems={refreshItems}
+      />
     </>
   );
 }

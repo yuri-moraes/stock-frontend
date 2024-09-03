@@ -5,16 +5,29 @@ import PropTypes from "prop-types";
 DeleteButton.propTypes = {
   itemId: PropTypes.string.isRequired,
   itemName: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  refreshItems: PropTypes.func.isRequired,
 };
 
-export default function DeleteButton({ itemId, itemName }) {
+export default function DeleteButton({
+  itemId,
+  itemName,
+  onDelete,
+  refreshItems,
+}) {
   const { deleteItem } = useStockItems();
   const navigate = useNavigate();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (confirm(`Tem certeza que deseja excluir ${itemName}?`)) {
-      deleteItem(itemId);
-      navigate("/items");
+      try {
+        await deleteItem(itemId);
+        onDelete(itemId);
+        refreshItems();
+        navigate("/items");
+      } catch (error) {
+        console.error("Erro ao deletar item:", error);
+      }
     }
   };
 

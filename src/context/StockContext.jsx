@@ -56,10 +56,10 @@ export function StockContextProvider({ children }) {
 
   const addItem = async (item) => {
     try {
-      await api.post("/items/new", item, {
+      const response = await api.post("/items/new", item, {
         headers: getAuthHeaders(),
       });
-      await fetchItems(); // Atualiza os itens após adicionar
+      setItems((prevItems) => [...prevItems, response.data]); // Adiciona o novo item ao estado local
     } catch (error) {
       logError("Erro ao adicionar item:", error);
     }
@@ -74,10 +74,15 @@ export function StockContextProvider({ children }) {
       const { title, description, unity, price, category } = newAttributes;
       const updatedData = { title, description, unity, price, category };
 
-      await api.put(`/items/${itemId}/update`, updatedData, {
+      const response = await api.put(`/items/${itemId}/update`, updatedData, {
         headers: getAuthHeaders(),
       });
-      await fetchItems(); // Atualiza os itens após atualizar
+
+      setItems((prevItems) =>
+        prevItems.map(
+          (item) => (item.id === itemId ? response.data : item) // Atualiza o item no estado local
+        )
+      );
     } catch (error) {
       logError("Erro ao atualizar item:", error);
     }
@@ -88,7 +93,7 @@ export function StockContextProvider({ children }) {
       await api.delete(`/items/${itemId}`, {
         headers: getAuthHeaders(),
       });
-      await fetchItems(); // Atualiza os itens após deletar
+      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); // Remove o item do estado local
     } catch (error) {
       logError("Erro ao deletar item:", error);
     }

@@ -1,7 +1,14 @@
 import PropTypes from "prop-types";
 import ItemRow from "../StockItems/ItemRow";
 
-function ItemTable({ items, user, loading }) {
+function ItemTable({ items, setItems, user, loading, refreshItems }) {
+  // Função de callback para atualizar a lista de itens após a exclusão
+  const handleDeleteItem = (deletedItemId) => {
+    setItems((prevItems) =>
+      prevItems.filter((item) => item.id !== Number(deletedItemId))
+    );
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-[300px] md:min-w-full border-collapse mb-4 text-sm md:text-base">
@@ -16,7 +23,13 @@ function ItemTable({ items, user, loading }) {
         </thead>
         {items.length > 0
           ? items.map((item) => (
-              <ItemRow key={item.id} item={item} user={user} />
+              <ItemRow
+                key={item.id}
+                item={item}
+                user={user}
+                onDelete={handleDeleteItem}
+                refreshItems={refreshItems}
+              />
             ))
           : !loading && (
               <tbody>
@@ -34,8 +47,10 @@ function ItemTable({ items, user, loading }) {
 
 ItemTable.propTypes = {
   items: PropTypes.array.isRequired,
+  setItems: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
+  refreshItems: PropTypes.func.isRequired, // Adicionando a prop refreshItems
 };
 
 export default ItemTable;

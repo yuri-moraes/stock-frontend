@@ -25,7 +25,9 @@ export default function TableData() {
 
   // Função para renderizar itens com baixa unidade
   const renderLowUnityItems = () => {
-    const lowUnityItems = items.filter((item) => item.unity < 10);
+    const lowUnityItems = items.filter(
+      (item) => item.unity < 10 && item.unity > 0
+    );
     if (lowUnityItems.length === 0) {
       return (
         <tr>

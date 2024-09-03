@@ -2,32 +2,23 @@ import { createContext, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import api from "@/api";
 
+// Criação do contexto
 export const StockContext = createContext({});
 
+// Validação das props do provider
 StockContextProvider.propTypes = {
   children: PropTypes.node,
 };
 
 export function StockContextProvider({ children }) {
+  // Estado dos itens e do usuário
   const [items, setItems] = useState([]);
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  const fetchItems = useCallback(async () => {
-    try {
-      const response = await api.get("/items");
-      setItems(response.data);
-    } catch (error) {
-      logError("Erro ao buscar itens:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
-
+  // Funções utilitárias de autenticação e headers
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     if (token && token !== "null") {
@@ -37,6 +28,31 @@ export function StockContextProvider({ children }) {
       return {};
     }
   };
+
+  const logError = (message, error) => {
+    console.error(message);
+    if (error.response) {
+      console.error("Resposta do servidor:", error.response);
+      console.error("Dados do erro:", error.response.data);
+      console.error("Status:", error.response.status);
+      console.error("Headers:", error.response.headers);
+    } else if (error.request) {
+      console.error("Sem resposta do servidor. Request:", error.request);
+    } else {
+      console.error("Erro ao configurar a requisição:", error.message);
+    }
+    console.error("Configuração do Axios:", error.config);
+  };
+
+  // Funções de gerenciamento de itens
+  const fetchItems = useCallback(async () => {
+    try {
+      const response = await api.get("/items");
+      setItems(response.data);
+    } catch (error) {
+      logError("Erro ao buscar itens:", error);
+    }
+  }, []);
 
   const addItem = async (item) => {
     try {
@@ -78,6 +94,12 @@ export function StockContextProvider({ children }) {
     }
   };
 
+  // Efeito para buscar itens ao montar o componente
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
+
+  // Funções de gerenciamento de autenticação
   const loginUser = (userData) => {
     if (!userData) {
       console.error("Usuário inválido não pode ser salvo no estado.");
@@ -99,21 +121,7 @@ export function StockContextProvider({ children }) {
     localStorage.removeItem("token");
   };
 
-  const logError = (message, error) => {
-    console.error(message);
-    if (error.response) {
-      console.error("Resposta do servidor:", error.response);
-      console.error("Dados do erro:", error.response.data);
-      console.error("Status:", error.response.status);
-      console.error("Headers:", error.response.headers);
-    } else if (error.request) {
-      console.error("Sem resposta do servidor. Request:", error.request);
-    } else {
-      console.error("Erro ao configurar a requisição:", error.message);
-    }
-    console.error("Configuração do Axios:", error.config);
-  };
-
+  // Objeto de valor do contexto
   const stock = {
     items,
     addItem,

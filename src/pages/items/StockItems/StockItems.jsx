@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import "./index.css";
-import useStockItems from "../../../hooks/useStockItems";
-import DeleteButton from "../../../components/DeleteButton";
+import useStockItems from "@/hooks/useStockItems";
+import DeleteButton from "@/components/DeleteButton";
 import { useState, useEffect } from "react";
-import { useStock } from "../../../context/useStock";
-import api from "../../../api";
+import { useStock } from "@/context/useStock";
+import api from "@/api";
 
 export default function StockItems() {
   const { fetchItems } = useStockItems();

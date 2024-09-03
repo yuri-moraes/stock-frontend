@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
-import api from "../../api";
+import api from "@/api";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");

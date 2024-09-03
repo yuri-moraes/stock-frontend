@@ -1,6 +1,6 @@
-import Display from "./Display";
-import useStock from "../hooks/useStockItems";
-import { getRecentItems } from "../hooks/getRecentItems";
+import Display from "../Display";
+import useStock from "@/hooks/useStockItems";
+import { getRecentItems } from "@/hooks/getRecentItems";
 
 export default function ResultDisplay() {
   const { items } = useStock();

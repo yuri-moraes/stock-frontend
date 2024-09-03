@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import api from "../../api";
-import DeleteButton from "../../components/DeleteButton";
-import { useStock } from "../../context/useStock";
+import api from "../../../api";
+import DeleteButton from "../../../components/DeleteButton";
+import { useStock } from "../../../context/useStock";
 
 export default function ShowItem() {
   const { id } = useParams();

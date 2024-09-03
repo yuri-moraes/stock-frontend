@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { changeUserPassword } from "../../hooks/userUtils";
-import api from "../../api";
-import DeleteUserButton from "../../components/DeleteUserButton";
-import { useStock } from "../../context/useStock";
+import { changeUserPassword } from "@/hooks/userUtils";
+import api from "@/api";
+import DeleteUserButton from "@/components/DeleteUserButton";
+import { useStock } from "@/context/useStock";
 
 export default function EditProfileUser() {
   const { id } = useParams();

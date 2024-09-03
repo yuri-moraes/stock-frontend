@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useStock } from "../../context/useStock";
-import { changeUserPassword, performLogout } from "../../hooks/userUtils";
-import api from "../../api";
+import { useStock } from "../../../context/useStock";
+import { changeUserPassword, performLogout } from "../../../hooks/userUtils";
+import api from "../../../api";
 
 export default function UserProfile() {
   const { id } = useParams();

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api";
-import { useStock } from "../../context/useStock";
-import DeleteUserButton from "../../components/DeleteUserButton";
+import api from "@/api";
+import { useStock } from "@/context/useStock";
+import DeleteUserButton from "@/components/DeleteUserButton";
 
 export default function UserDashboard() {
   const [users, setUsers] = useState([]);

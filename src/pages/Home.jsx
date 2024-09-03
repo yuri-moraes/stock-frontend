@@ -1,5 +1,5 @@
-import ResultDisplay from "../components/ResultDisplay";
-import TableData from "../components/TableData";
+import ResultDisplay from "@/components/ResultDisplay";
+import TableData from "@/components/TableData";
 
 export default function Home() {
   return (

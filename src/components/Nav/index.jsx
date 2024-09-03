@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useStock } from "../context/useStock";
+import { useStock } from "@/context/useStock";
 
 export default function Nav() {
   const { user, loginUser, logoutUser } = useStock();

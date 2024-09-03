@@ -1,4 +1,4 @@
-import api from "../api";
+import api from "@/api";
 
 // Função para atualizar os dados do usuário após uma operação CRUD
 const refreshUserData = async (userId, setUser) => {

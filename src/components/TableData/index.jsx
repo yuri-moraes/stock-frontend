@@ -1,6 +1,6 @@
-import useStock from "../hooks/useStockItems";
+import useStock from "@/hooks/useStockItems";
 import { Link } from "react-router-dom";
-import { getRecentItems } from "../hooks/getRecentItems";
+import { getRecentItems } from "@/hooks/getRecentItems";
 
 export default function TableData() {
   const { items } = useStock();

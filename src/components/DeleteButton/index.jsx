@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import useStockItems from "../hooks/useStockItems";
+import useStockItems from "@/hooks/useStockItems";
 import PropTypes from "prop-types";
 
 DeleteButton.propTypes = {

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
-import { CATEGORIES } from "../entities/StockItem";
-import useStockItems from "../hooks/useStockItems";
+import { CATEGORIES } from "@/entities/StockItem";
+import useStockItems from "@/hooks/useStockItems";
 
 ItemForm.propTypes = {
   itemToUpdate: PropTypes.object,

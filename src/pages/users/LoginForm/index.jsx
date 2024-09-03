@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api";
-import { useStock } from "../../context/useStock";
+import api from "@/api";
+import { useStock } from "@/context/useStock";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

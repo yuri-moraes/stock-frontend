@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import api from "../api";
+import api from "@/api";
 
 export const StockContext = createContext({});
 

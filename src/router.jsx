@@ -1,7 +1,7 @@
 import { createHashRouter } from "react-router-dom";
 import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
-import StockItems from "./pages/items/StockItems/StockItems";
+import StockItems from "./pages/items/StockItems";
 import CreateItem from "./pages/items/CreateItem";
 import ShowItem from "./pages/items/ShowItems";
 import UpdateItem from "./pages/items/UpdateItem";

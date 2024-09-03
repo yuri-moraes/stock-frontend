@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ItemForm from "../../../components/ItemForm";
-import api from "../../../api";
-import { useStock } from "../../../context/useStock";
+import ItemForm from "@/components/ItemForm";
+import api from "@/api";
+import { useStock } from "@/context/useStock";
 
 export default function UpdateItem() {
   const { id } = useParams();

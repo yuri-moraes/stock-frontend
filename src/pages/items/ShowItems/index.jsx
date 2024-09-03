@@ -1,8 +1,11 @@
-import { Link, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import api from "../../../api";
-import DeleteButton from "../../../components/DeleteButton";
-import { useStock } from "../../../context/useStock";
+import { useParams } from "react-router-dom";
+import api from "@/api";
+import { useStock } from "@/context/useStock";
+import AdminActions from "../ShowItems/AdminActions";
+import ItemDetails from "../ShowItems/ItemDetails";
+import QuantityControl from "../ShowItems/QuantityControl";
+import Message from "../ShowItems/Message";
 
 export default function ShowItem() {
   const { id } = useParams();
@@ -92,61 +95,18 @@ export default function ShowItem() {
   return (
     <div className="bg-gray-700 p-6 rounded-md shadow-md text-white ml-5 mr-5">
       <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
-      {user.role === "admin" && (
-        <div className="flex space-x-2 mb-4">
-          <Link
-            to={`/items/${item.id}/update`}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Atualizar
-          </Link>
-          <DeleteButton itemId={item.id} itemName={item.title} />
-        </div>
-      )}
-
-      <div className="flex flex-col gap-4 mb-4">
-        <span>Categoria: {item.category}</span>
-        <div className="flex items-center space-x-4">
-          <span>Quantidade em estoque: {item.unity + quantityChange}</span>
-          <button
-            className="bg-gray-600 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded"
-            onClick={handleDecrement}
-          >
-            -
-          </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
-            onClick={handleSave}
-          >
-            Salvar
-          </button>
-          {user.role === "admin" && (
-            <button
-              className="bg-gray-600 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded"
-              onClick={handleIncrement}
-            >
-              +
-            </button>
-          )}
-        </div>
-
-        <span>Preço: R$ {item.price.toFixed(2)}</span>
-      </div>
-
-      {error && (
-        <p className="text-red-500 bg-red-100 p-2 rounded mb-4">{error}</p>
-      )}
-      {message && (
-        <p className="text-green-500 bg-green-100 p-2 rounded mb-4">
-          {message}
-        </p>
-      )}
-
-      <p className="mb-4">{item.description}</p>
-      <div className="flex flex-col gap-2">
-        <p>Cadastrado em: {new Date(item.createdAt).toLocaleDateString()}</p>
-        <p>Atualizado em: {new Date(item.updatedAt).toLocaleDateString()}</p>
-      </div>
+      {user.role === "admin" && <AdminActions item={item} />}
+      <ItemDetails item={item} />
+      <QuantityControl
+        item={item}
+        quantityChange={quantityChange}
+        handleIncrement={handleIncrement}
+        handleDecrement={handleDecrement}
+        handleSave={handleSave}
+        user={user}
+      />
+      {error && <Message type="error" message={error} />}
+      {message && <Message type="success" message={message} />}
     </div>
   );
 }

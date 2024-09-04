@@ -50,7 +50,7 @@ ItemTable.propTypes = {
   setItems: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-  refreshItems: PropTypes.func.isRequired, // Adicionando a prop refreshItems
+  refreshItems: PropTypes.func.isRequired,
 };
 
 export default ItemTable;

@@ -132,13 +132,15 @@ export default function UserProfile() {
       <div className="text-center mb-4">
         <h1 className="text-2xl font-semibold">Perfil do Usuário</h1>
       </div>
-      <UserProfileDetails currentUser={currentUser} />
-      {user.role === "admin" && (
+
+      {user.role === "admin" ? (
         <UserProfileForm
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
           handleEditProfile={handleEditProfile}
         />
+      ) : (
+        <UserProfileDetails currentUser={currentUser} />
       )}
       <PasswordChangeForm
         newPassword={newPassword}

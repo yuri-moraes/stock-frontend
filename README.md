@@ -2,7 +2,7 @@
 
 Este projeto é uma aplicação web desenvolvida para o controle de estoque de itens, implementando funcionalidades CRUD para gerenciar entidades de usuários e itens. A administração do sistema é realizada por um administrador, que tem permissões para gerenciar contas de usuários e atualizar os itens do estoque. Usuários comuns, por outro lado, têm permissões limitadas, podendo apenas realizar login, alterar sua senha, e criar e visualizar itens disponíveis.
 
-Acesse a aplicação através do seguinte link: [Clique aqui](https://react-stock-jph97vote-yurimoraes-projects.vercel.app/#/)
+Acesse a aplicação através do seguinte link: [Clique aqui](https://react-stock-dev.vercel.app/)
 
 ## Tecnologias Utilizadas
 
@@ -13,6 +13,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
   - React Router DOM: Biblioteca para gerenciar navegação entre páginas.
   - Axios: Cliente HTTP para realizar requisições à API.
   - Prop-Types: Biblioteca para validação de tipos de propriedades em componentes React.
+  - Tailwind CSS: Framework de utilidades para estilização rápida e eficiente de componentes.
 
 - **Back-end:**
   - Node.js: Plataforma de execução de código JavaScript no servidor.
@@ -26,33 +27,28 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 - **Gerenciamento de Estado e Contexto:**
   - Context API do React: Utilizada para gerenciar o estado global da aplicação.
 
-## Documentação da API
+## Tailwind CSS
 
-Como este é um projeto colaborativo, o desenvolvimento da API está sendo conduzido separadamente. Para mais detalhes sobre a API, acesse o repositório oficial:
+O Tailwind CSS é um framework de CSS utilitário que permite criar estilos de forma eficiente diretamente nos arquivos JSX. Em vez de escrever CSS tradicional, você aplica classes de utilidade diretamente aos elementos para estilização.
 
-- [Repositório da API (@stock-api)](https://github.com/yuri-moraes/stock_api/tree/main)
+### Configuração do `tailwind.config.js`
 
-## Autores
+O arquivo `tailwind.config.js` é utilizado para configurar o Tailwind CSS, permitindo customizações e extensões das configurações padrão. No projeto, este arquivo pode ser ajustado para adicionar temas personalizados, estender estilos, adicionar plugins, entre outros.
 
-- [Yuri Moraes](https://www.github.com/yuri-moraes)
-- [Marcos dos Santos](https://www.github.com/marcos90s)
-
-## Deploy
-
-Para configurar o projeto, ajuste o arquivo de configuração da API em `./src/api` para apontar para a porta correta do seu servidor back-end. Exemplo de configuração:
+Exemplo de configuração básica no `tailwind.config.js`:
 
 ```javascript
-baseURL: "http://localhost:3000"
-```
-
-Para iniciar o projeto em ambiente de desenvolvimento, utilize o seguinte comando:
-
-```bash
-npm run dev
-```
-
-## Contribuindo
-
-Contribuições são sempre bem-vindas! Todos os `pull requests` serão revisados e, se a sua contribuição for significativa, ela será incorporada ao projeto.
-
-Por favor, siga as diretrizes definidas na seção `Objetivo` deste README para garantir que sua contribuição esteja alinhada com o propósito do projeto.
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#1DA1F2',
+        secondary: '#14171A',
+      },
+    },
+  },
+  plugins: [],
+}

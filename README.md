@@ -4,7 +4,7 @@ Este projeto é uma aplicação web desenvolvida para o controle de estoque de i
 
 Acesse a aplicação através do seguinte link: [Clique aqui](https://react-stock-dev.vercel.app/)
 
-## Acesso de Login
+## Acesso ao Sistema
 
 Aqui estão as credenciais para acessar o sistema como um usuário comum (caso não queira cadastrar) ou administrador:
 

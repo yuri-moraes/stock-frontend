@@ -6,7 +6,7 @@ Acesse a aplicação através do seguinte link: [Clique aqui](https://react-stoc
 
 ## Acesso de Login
 
-Aqui estão as credenciais para acessar o sistema como um usuário comum ou administrador:
+Aqui estão as credenciais para acessar o sistema como um usuário comum (caso não queira cadastrar) ou administrador:
 
 - **Common User:**
   - Email: `common@user.com`

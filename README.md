@@ -4,6 +4,18 @@ Este projeto é uma aplicação web desenvolvida para o controle de estoque de i
 
 Acesse a aplicação através do seguinte link: [Clique aqui](https://react-stock-dev.vercel.app/)
 
+## Acesso de Login
+
+Aqui estão as credenciais para acessar o sistema como um usuário comum ou administrador:
+
+- **Common User:**
+  - Email: `common@user.com`
+  - Senha: `Common@123`
+
+- **Admin:**
+  - Email: `admin@user.com`
+  - Senha: `Admin@123`
+
 ## Tecnologias Utilizadas
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:

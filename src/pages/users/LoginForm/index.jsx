@@ -17,6 +17,11 @@ export default function LoginForm() {
     e.preventDefault();
     setError(null);
 
+    if (!email || !password) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
     try {
       const response = await api.post("/users/login", {
         email,

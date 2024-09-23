@@ -14,6 +14,7 @@ import EditProfileUser from "./pages/users/EditProfileUser";
 import Forbidden from "./components/Error/Forbidden";
 import PrivateRoute from "./components/Error/PrivateRoute";
 import NotFound from "./components/Error/NotFound";
+import Log from "./pages/log";
 import api from "./api";
 
 // Função para buscar itens
@@ -35,6 +36,14 @@ const router = createHashRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "logs",
+        element: (
+          <PrivateRoute>
+            <Log />
+          </PrivateRoute>
+        ),
       },
       {
         path: "users",

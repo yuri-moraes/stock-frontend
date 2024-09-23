@@ -108,6 +108,9 @@ export default function Nav() {
             <Link to={"/items"}>
               <button className="text-white mx-0.5">Itens</button>
             </Link>
+            <Link to={"/logs"}>
+              <button className="text-white mx-0.5">Logs</button>
+            </Link>
             <button className="text-white mx-0.5" onClick={handleProfileClick}>
               Meu Perfil
             </button>

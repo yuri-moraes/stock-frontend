@@ -6,10 +6,10 @@ function ItemRow({ item, user, onDelete, refreshItems }) {
   return (
     <tbody>
       <tr className="border-t border-gray-600 hover:bg-gray-700 transform hover:-translate-y-1 transition-all duration-300">
-        <td className="p-2 md:p-4 text-white">{item.id}</td>
-        <td className="p-2 md:p-4 text-white">{item.title}</td>
-        <td className="p-2 md:p-4 text-white">{item.unity} unid.</td>
-        <td className="p-2 md:p-4 text-white">{item.category}</td>
+        <td className="p-2 md:p-4 text-sm text-gray-200">{item.id}</td>
+        <td className="p-2 md:p-4 text-sm text-gray-200">{item.title}</td>
+        <td className="p-2 md:p-4 text-sm text-gray-200">{item.unity} unid.</td>
+        <td className="p-2 md:p-4 text-sm text-gray-200">{item.category}</td>
         <td className="p-2 md:p-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
           <Link
             to={`/items/${item.id}`}

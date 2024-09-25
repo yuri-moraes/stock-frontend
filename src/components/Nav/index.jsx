@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useStock } from "@/context/useStock";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 export default function Nav() {
   const { user, loginUser, logoutUser } = useStock();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navRef = useRef(null); // Referência para o elemento de navegação
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -26,33 +26,6 @@ export default function Nav() {
     }
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (navRef.current && !navRef.current.contains(event.target)) {
-        setIsMobileMenuOpen(false); // Fecha o menu se o clique for fora do menu
-      }
-    };
-
-    const handleTouchStart = (event) => {
-      if (navRef.current && !navRef.current.contains(event.target)) {
-        setIsMobileMenuOpen(false); // Fecha o menu se o toque for fora do menu
-      }
-    };
-
-    if (isMobileMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("touchstart", handleTouchStart);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleTouchStart);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleTouchStart);
-    };
-  }, [isMobileMenuOpen]);
-
   const handleLogout = () => {
     logoutUser();
     navigate("/users/login");
@@ -66,74 +39,100 @@ export default function Nav() {
     }
   };
 
-  return (
-    <nav
-      ref={navRef}
-      className="flex items-center justify-between w-full py-4 px-4 bg-gray-600"
-    >
+  const menuItems = (
+    <>
       <Link to={"/"}>
-        <span className="text-white text-lg">React Stock</span>
+        <span className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors">
+          Início
+        </span>
       </Link>
-      <div className="md:hidden">
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="text-white focus:outline-none"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        className={`flex-col md:flex md:flex-row gap-4 mx-4 ${
-          isMobileMenuOpen ? "flex" : "hidden"
-        } md:flex`}
+      <Link to={"/items"}>
+        <span className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors">
+          Itens
+        </span>
+      </Link>
+      <Link to={"/logs"}>
+        <span className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors">
+          Logs
+        </span>
+      </Link>
+      <button
+        className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors text-left w-full"
+        onClick={handleProfileClick}
       >
-        {user ? (
-          <>
+        Perfil
+      </button>
+      {user?.role === "admin" && (
+        <Link to={"/users"}>
+          <span className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors">
+            Dashboard
+          </span>
+        </Link>
+      )}
+      <button
+        className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors text-left w-full"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+    </>
+  );
+
+  const guestMenuItems = (
+    <>
+      <Link to={"/users/login"}>
+        <span className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors">
+          Login
+        </span>
+      </Link>
+      <Link to={"/users/register"}>
+        <span className="block px-3 py-2 rounded-md text-base font-medium hover:text-blue-400 transition-colors">
+          Cadastro
+        </span>
+      </Link>
+    </>
+  );
+
+  return (
+    <nav className="bg-gray-600 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
             <Link to={"/"}>
-              <button className="text-white mx-0.5">Início</button>
+              <span className="text-2xl font-bold">React Stock</span>
             </Link>
-            <Link to={"/items"}>
-              <button className="text-white mx-0.5">Itens</button>
-            </Link>
-            <Link to={"/logs"}>
-              <button className="text-white mx-0.5">Logs</button>
-            </Link>
-            <button className="text-white mx-0.5" onClick={handleProfileClick}>
-              Meu Perfil
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-6">
+            {user ? menuItems : guestMenuItems}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="focus:outline-none"
+            >
+              {isMobileMenuOpen ? (
+                <FaTimes className="w-6 h-6" />
+              ) : (
+                <FaBars className="w-6 h-6" />
+              )}
             </button>
-            {user.role === "admin" && (
-              <Link to={"/users"}>
-                <button className="text-white mx-0.5">Dashboard</button>
-              </Link>
-            )}
-            <button className="text-white mx-0.5" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to={"/users/login"}>
-              <button className="text-white mx-0.5">Login</button>
-            </Link>
-            <Link to={"/users/register"}>
-              <button className="text-white mx-0.5">Cadastro</button>
-            </Link>
-          </>
-        )}
+          </div>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {user ? menuItems : guestMenuItems}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

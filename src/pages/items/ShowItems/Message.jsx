@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 function Message({ type, message }) {
   const messageStyle =
     type === "error"
-      ? "text-red-500 bg-red-100 p-2 rounded mb-4"
-      : "text-green-500 bg-green-100 p-2 rounded mb-4";
+      ? "text-red-500 bg-red-100 p-4 rounded-lg mb-4"
+      : "text-green-500 bg-green-100 p-4 rounded-lg mb-4";
 
   return <p className={messageStyle}>{message}</p>;
 }

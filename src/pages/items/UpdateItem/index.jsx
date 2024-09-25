@@ -39,7 +39,7 @@ export default function UpdateItem() {
 
   return (
     <>
-      <h1>Atualizar Item</h1>
+      <h1 className="px-6">Atualizar Item</h1>
       <ItemForm itemToUpdate={item} />
     </>
   );

@@ -1,7 +1,17 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { FaUserCircle, FaClock, FaSearch } from "react-icons/fa";
 
 const LogActivity = ({ logs }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Função para filtrar os logs com base no termo de busca (email ou item ID)
+  const filteredLogs = logs.filter(
+    (log) =>
+      log.userEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.action.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="p-6 max-w-4xl mx-auto bg-gray-800 rounded-lg shadow-lg text-white">
       <h2 className="text-3xl font-semibold mb-8 text-center">
@@ -11,14 +21,17 @@ const LogActivity = ({ logs }) => {
       <div className="relative mb-8">
         <input
           type="text"
-          placeholder="Buscar..."
+          placeholder="Buscar por e-mail ou ID do item..."
           className="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o estado com o termo de busca
         />
         <FaSearch className="absolute left-4 top-3.5 text-gray-400" />
       </div>
 
+      {/* Exibe os logs filtrados */}
       <div className="space-y-4">
-        {logs.map((log, index) => (
+        {filteredLogs.map((log, index) => (
           <div
             key={index}
             className="flex items-center p-4 bg-gray-900 rounded-lg shadow hover:bg-gray-700 transition-colors"

@@ -105,7 +105,7 @@ export default function EditProfileUser() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-gray-900 rounded-lg shadow-lg text-white">
+    <div className="max-w-md mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg text-white">
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-bold">Editar Perfil do Usuário</h1>
       </div>

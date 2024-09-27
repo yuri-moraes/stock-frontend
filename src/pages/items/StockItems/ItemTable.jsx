@@ -14,11 +14,21 @@ function ItemTable({ items, setItems, user, loading, refreshItems }) {
       <table className="min-w-[300px] md:min-w-full border-collapse mb-4 text-sm md:text-base">
         <thead className="bg-gray-800">
           <tr>
-            <th className="text-left text-white p-2 md:p-4">ID</th>
-            <th className="text-left text-white p-2 md:p-4">Nome</th>
-            <th className="text-left text-white p-2 md:p-4">Em Estoque</th>
-            <th className="text-left text-white p-2 md:p-4">Categoria</th>
-            <th className="text-left text-white p-2 md:p-4">Ações</th>
+            <th className="text-left text-gray-400 p-2 md:p-4 font-medium tracking-wider">
+              ID
+            </th>
+            <th className="text-left text-gray-400 p-2 md:p-4 font-medium tracking-wider">
+              Nome
+            </th>
+            <th className="text-left text-gray-400 p-2 md:p-4 font-medium tracking-wider">
+              Em Estoque
+            </th>
+            <th className="text-left text-gray-400 p-2 md:p-4 font-medium tracking-wider">
+              Categoria
+            </th>
+            <th className="text-left text-gray-400 p-2 md:p-4 font-medium tracking-wider">
+              Ações
+            </th>
           </tr>
         </thead>
         {items.length > 0

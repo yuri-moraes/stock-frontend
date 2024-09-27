@@ -11,7 +11,6 @@ function UserProfileForm({ currentUser, setCurrentUser, handleEditProfile }) {
   return (
     <div className="mb-6">
       <div className="flex flex-col items-start mb-4">
-        <label className="text-white mb-2">Nome:</label>
         <input
           type="text"
           value={currentUser.name}
@@ -23,7 +22,6 @@ function UserProfileForm({ currentUser, setCurrentUser, handleEditProfile }) {
         />
       </div>
       <div className="flex flex-col items-start mb-4">
-        <label className="text-white mb-2">Email:</label>
         <input
           type="email"
           value={currentUser.email}
@@ -36,7 +34,6 @@ function UserProfileForm({ currentUser, setCurrentUser, handleEditProfile }) {
         />
       </div>
       <div className="flex items-center mb-6">
-        <label className="text-white mr-6">Role:</label>
         <div
           onClick={toggleRole}
           className={`relative inline-block w-12 h-6 cursor-pointer transition-colors duration-300 ${

@@ -95,7 +95,6 @@ export default function ShowItem() {
   return (
     <div className="bg-gray-700 p-6 rounded-md shadow-md text-white ml-5 mr-5">
       <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
-      {user.role === "admin" && <AdminActions item={item} />}
       <ItemDetails item={item} />
       <QuantityControl
         item={item}
@@ -105,6 +104,7 @@ export default function ShowItem() {
         handleSave={handleSave}
         user={user}
       />
+      {user.role === "admin" && <AdminActions item={item} />}
       {error && <Message type="error" message={error} />}
       {message && <Message type="success" message={message} />}
     </div>

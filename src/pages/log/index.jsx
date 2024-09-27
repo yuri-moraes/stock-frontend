@@ -1,37 +1,40 @@
+import { useEffect, useState } from "react";
 import LogActivity from "@/components/LogActivity";
-
-const logsData = [
-  {
-    userEmail: "user-email@example.com",
-    action: "X QTD REMOVIDAS",
-    date: "2024-09-22",
-  },
-  {
-    userEmail: "username@example.com",
-    action: "X QTD ADICIONADAS",
-    date: "2024-09-18",
-  },
-  {
-    userEmail: "username@example.com",
-    action: "ITEM X REMOVIDO",
-    date: "2024-09-21",
-  },
-  {
-    userEmail: "username@example.com",
-    action: "ITEM Y CRIADO",
-    date: "2024-09-20",
-  },
-  {
-    userEmail: "username@example.com",
-    action: "ITEM Z ATUALIZADO",
-    date: "2024-09-19",
-  },
-];
+import api from "@/api";
 
 function Log() {
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Função para buscar logs da API
+  useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const response = await api.get("/logs");
+        setLogs(response.data);
+      } catch (error) {
+        setError("Erro ao carregar logs");
+        console.error("Erro ao buscar logs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLogs();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-white">Carregando logs...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
+
   return (
     <div>
-      <LogActivity logs={logsData} />
+      <LogActivity logs={logs} />
     </div>
   );
 }

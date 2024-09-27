@@ -30,7 +30,18 @@ const LogActivity = ({ logs }) => {
             </div>
             <div className="flex items-center text-gray-400">
               <FaClock className="mr-1" />
-              <span>{log.date}</span>
+              <span>
+                {new Date(log.createdAt).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}{" "}
+                {new Date(log.createdAt).toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+              </span>
             </div>
           </div>
         ))}
@@ -44,7 +55,7 @@ LogActivity.propTypes = {
     PropTypes.shape({
       userEmail: PropTypes.string.isRequired,
       action: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

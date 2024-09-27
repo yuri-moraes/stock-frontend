@@ -89,7 +89,7 @@ const router = createHashRouter([
           {
             path: "new",
             element: (
-              <PrivateRoute>
+              <PrivateRoute role="admin">
                 <CreateItem />
               </PrivateRoute>
             ),
